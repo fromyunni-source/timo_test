@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timo — Design your semester.</title>
+<script>
+window.GA_MEASUREMENT_ID = 'G-CQHZP66KS7'; /* 측정 ID: 여기 한 곳만 교체하면 됩니다 */
+(function(){
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', window.GA_MEASUREMENT_ID);
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+  document.head.appendChild(s);
+})();
+</script>
+<link rel="stylesheet" as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&amp;display=swap" rel="stylesheet">
+<style>
+/* ============================ tokens ============================ */
+:root{
+  --ink:#2A1F26;
+  --ink-55:rgba(42,31,38,.55);
+  --ink-32:rgba(42,31,38,.32);
+  --ink-12:rgba(42,31,38,.12);
+  --ink-06:rgba(42,31,38,.06);
+
+  --paper:#F8F4F6;
+  --card:#FFFFFF;
+  --pink:#F6D3E0;
+  --pink-soft:#FDEFF4;
+  --pink-deep:#E9A9C3;
+  --accent:#B8547C;
+
+  --kr:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;
+  --kr-display:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;
+  --serif:"Playfair Display",Georgia,serif;
+  --mono:"Pretendard Variable",Pretendard,system-ui,-apple-system,sans-serif;
+
+  --r:14px;
+  --pad:clamp(20px,5vw,64px);
+  --maxw:1180px;
+}
+
+/* timetable palettes */
+/* Peach — blush pink to warm cream */
+.tt[data-theme="peach"],[data-theme="peach"]{
+  --g-bg:#FFFCF9; --g-line:rgba(150,100,110,.14); --g-ink:#4A2B36; --g-mut:rgba(74,43,54,.45);
+  --g-canvas:#FCF8EC;
+  --c1:#FCD2DF;--c2:#FDDBE0;--c3:#FEE4E2;--c4:#FEEDE3;--c5:#FFF6E4;--c6:#F8BCCF;--c7:#FBDCC4;--c8:#F7C9C2;
+  --i1:#6A2B45;--i2:#6A2E42;--i3:#6A333E;--i4:#6A4030;--i5:#6A5228;--i6:#5A1E38;--i7:#6A4530;--i8:#6A3028;
+}
+/* Lemonade — creamy lemon and milky sky blue */
+.tt[data-theme="lemonade"],[data-theme="lemonade"]{
+  --g-bg:#FFFEF5; --g-line:rgba(90,80,60,.15); --g-ink:#33465A; --g-mut:rgba(51,70,90,.46);
+  --g-canvas:#FBF6E2; --g-accent:#F5E7A0;
+  --c1:#FEFDD7;--c2:#FEF7B9;--c3:#FDE7E6;--c4:#F8CBD1;--c5:#E8F5FC;--c6:#E5EFF6;--c7:#D6E5F0;--c8:#3D5C7B;
+  --i1:#5A4A1E;--i2:#5A4A1E;--i3:#6B3A42;--i4:#5C2B36;--i5:#1E3A4E;--i6:#1E3A4E;--i7:#193346;--i8:#FFFFFF;
+}
+/* Opal — pearly neutrals with faint blue, lilac and mint */
+.tt[data-theme="opal"],[data-theme="opal"]{
+  --g-bg:#FAFAF8; --g-line:rgba(70,75,85,.15); --g-ink:#2F3238; --g-mut:rgba(47,50,56,.46);
+  --g-canvas:#F4FBF8; --g-accent:#BFE7DC;
+  --c1:#CDDFEB;--c2:#F1E2F9;--c3:#D4F0EA;--c4:#EFEEE7;--c5:#DFDCD5;--c6:#F7E4E9;--c7:#FBF2DC;--c8:#BFCEDC;
+  --i1:#22323E;--i2:#3A2A42;--i3:#1E3A34;--i4:#333029;--i5:#333029;--i6:#462A32;--i7:#453A22;--i8:#1C2C38;
+}
+/* Sage — soft greens & cream */
+.tt[data-theme="sage"],[data-theme="sage"]{
+  --g-bg:#FDFDF7; --g-line:rgba(70,90,55,.14); --g-ink:#2F3A2A; --g-mut:rgba(47,58,42,.44);
+  --c1:#99A98F;--c2:#C1D0B5;--c3:#DCE3C7;--c4:#DBEAD2;--c5:#FFF8DE;--c6:#7F9175;--c7:#B0C4A3;--c8:#EDF2DE;
+  --i1:#22301C;--i2:#26331F;--i3:#3A3F26;--i4:#26331F;--i5:#4A4326;--i6:#FFFFFF;--i7:#26331F;--i8:#3A3F26;
+}
+/* Blueberries — sky blues deepening to navy, two neutrals for relief */
+.tt[data-theme="blueberries"],[data-theme="blueberries"]{
+  --g-bg:#FAFCFD; --g-line:rgba(43,67,98,.16); --g-ink:#2B4362; --g-mut:rgba(43,67,98,.48);
+  --c1:#F2F3F5;--c2:#CDCBC7;--c3:#DCE9F4;--c4:#AEC3D9;--c5:#8FAECB;--c6:#5A7495;--c7:#2B4362;--c8:#0A0C18;
+  --i1:#1E2A3C;--i2:#2A2924;--i3:#16263A;--i4:#16263A;--i5:#12283C;--i6:#FFFFFF;--i7:#FFFFFF;--i8:#FFFFFF;
+}
+/* Cookies and Cream — cocoa to cream */
+.tt[data-theme="cookies"],[data-theme="cookies"]{
+  --g-bg:#F3ECE3; --g-line:rgba(90,75,65,.16); --g-ink:#3D342E; --g-mut:rgba(61,52,46,.46);
+  --c1:#796B63;--c2:#A4928B;--c3:#D6C7BB;--c4:#F6EDDC;--c5:#FFFFFB;--c6:#5A4F48;--c7:#C0AEA4;--c8:#EBE0D0;
+  --i1:#FFFFFB;--i2:#FFFFFB;--i3:#3D342E;--i4:#3D342E;--i5:#3D342E;--i6:#FFFFFB;--i7:#2E2721;--i8:#3D342E;
+}
+
+/* ============================ base ============================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--kr);font-weight:400;color:var(--ink);
+  background:repeating-linear-gradient(90deg,var(--pink) 0 13px,var(--pink-soft) 13px 30px);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;word-break:keep-all}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:5px}
+.hidden{display:none!important}
+
+.eyebrow{font-family:var(--kr);font-weight:500;font-size:.66rem;letter-spacing:.14em;color:var(--ink-32)}
+
+.btn{display:inline-block;font-family:var(--kr);font-weight:600;font-size:.88rem;
+  padding:11px 20px;border-radius:99px;border:1px solid transparent;cursor:pointer;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease,color .18s ease}
+.btn-solid{background:var(--ink);color:#fff}
+.btn-solid:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(42,31,38,.22)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink-12)}
+.btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+.btn-pink{background:var(--pink);color:var(--accent);letter-spacing:.02em}
+.btn-pink:hover{background:var(--pink-deep);color:#fff;transform:translateY(-2px);box-shadow:0 8px 22px rgba(233,169,195,.5)}
+.btn-lg{padding:15px 32px;font-size:1rem}
+
+/* ============================ nav ============================ */
+.folderbar{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding:46px clamp(14px,4%,44px) 0 clamp(2px,1%,10px)}
+.logo{font-family:var(--serif);font-weight:500;font-size:1.6rem;letter-spacing:.005em;
+  color:var(--ink);display:block;line-height:1;padding-bottom:13px}
+
+/* ============================ hero ============================ */
+.folder{position:relative;max-width:1010px;margin:0 auto;
+  transition:max-width .45s cubic-bezier(.3,.8,.3,1)}
+.folder.wide{max-width:1330px}
+
+.tabs{display:flex;gap:5px;align-items:flex-end;position:relative;z-index:2}
+.tab{border:none;cursor:pointer;background:var(--pink);color:var(--accent);
+  font-family:var(--kr);font-weight:600;font-size:.88rem;letter-spacing:-.01em;
+  padding:11px 24px;border-radius:13px 13px 0 0;
+  transition:background .2s ease,color .2s ease,padding .2s ease}
+.tab:hover{background:var(--pink-deep);color:#fff}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);padding:13px 26px 19px;
+  margin-bottom:-7px;box-shadow:0 -4px 14px -6px rgba(42,31,38,.18)}
+
+.sheet{position:relative;background:#fff;border-radius:16px;
+  padding:clamp(34px,5vw,56px) clamp(18px,4vw,54px) clamp(30px,4vw,48px);
+  box-shadow:0 30px 70px -26px rgba(42,31,38,.28),0 2px 8px rgba(42,31,38,.05)}
+.hero{text-align:center}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,5.4vw,3.7rem);
+  line-height:1.1;letter-spacing:-.01em;margin:16px 0 0}
+.hero h1 em{font-style:italic;font-weight:500}
+.hero .lead{font-family:var(--kr-display);color:var(--ink-55);margin:20px auto 0;font-size:clamp(.94rem,1.5vw,1.05rem);
+  white-space:nowrap}
+.hero-cta{display:flex;gap:10px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.hero .divider{height:1px;background:var(--ink-12);margin-top:clamp(30px,4vw,44px)}
+
+.marquee{background:var(--pink-deep);color:#6E2743;overflow:hidden;padding:11px 0;white-space:nowrap;
+  border-radius:var(--r);margin:clamp(38px,6vw,60px) 0 0}
+.marquee .track{display:inline-flex;animation:slide 30s linear infinite}
+.marquee span{font-family:var(--serif);font-style:italic;font-size:.84rem;padding:0 34px;opacity:.95}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============================ timetable ============================ */
+.tt{background:var(--g-bg);border-radius:var(--r);padding:clamp(12px,1.8vw,20px);
+  transition:background .5s ease;overflow-x:auto;text-align:left}
+.tt.raised{box-shadow:0 26px 60px -24px rgba(42,31,38,.28),0 2px 6px rgba(42,31,38,.05)}
+.tt-head{display:flex;align-items:baseline;gap:10px;margin-bottom:13px;padding-inline:2px}
+.tt-title{font-family:var(--kr);font-weight:600;font-size:1rem;letter-spacing:-.02em;
+  color:var(--g-ink);transition:color .5s ease}
+.tt-sub{font-family:var(--kr);font-size:.75rem;color:var(--g-mut);margin-left:auto;transition:color .5s ease}
+.grid{display:grid;grid-template-columns:40px repeat(5,minmax(72px,1fr));
+  column-gap:3px;row-gap:0;min-width:440px;--g-gap:3px}
+.day,.time{color:var(--g-mut);display:flex;justify-content:center;transition:color .5s ease}
+.day{font-family:var(--kr);font-weight:500;font-size:.74rem;align-items:center}
+.time{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.62rem;
+  justify-content:flex-end;align-items:flex-start;padding-right:6px;line-height:1;margin-top:2px}
+.cellcol{position:relative}
+.cellcol::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--g-gap) / -2);width:1px;background:var(--g-line);transition:background-color .5s ease}
+.block{border-radius:7px;padding:5px 8px;overflow:hidden;display:flex;flex-direction:column;
+  gap:0;margin:0 2px 2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.055);
+  transition:transform .18s ease,background .5s ease,box-shadow .18s ease;min-width:0}
+.block b,.block span,.block em{
+  display:block;line-height:1.38;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.block b{font-size:.7rem;font-weight:600;letter-spacing:-.01em}
+.block span{font-family:var(--kr);font-size:.6rem;font-weight:400;opacity:.68}
+.block em{font-style:normal;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:.6rem;font-weight:400;opacity:.48}
+.tt-anim .block{animation:pop .5s cubic-bezier(.22,1.2,.36,1) backwards}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:none}}
+
+.swatches{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:16px;flex-wrap:wrap}
+.swatches .lbl{font-family:var(--mono);font-size:.66rem;color:var(--ink-32);letter-spacing:.1em}
+.sw{border:1px solid var(--ink-12);background:transparent;cursor:pointer;border-radius:99px;
+  padding:5px 12px 5px 7px;display:flex;align-items:center;gap:7px;
+  font-size:.77rem;color:var(--ink-55);font-weight:500;
+  transition:border-color .18s ease,color .18s ease,transform .18s ease}
+.sw:hover{transform:translateY(-1px);border-color:var(--ink-32)}
+.sw[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.sw .dots{display:flex}
+.sw .dots i{width:11px;height:11px;border-radius:50%;display:block;margin-left:-4px;box-shadow:0 0 0 1.5px #fff}
+.sw .dots i:first-child{margin-left:0}
+
+/* ============================ sections ============================ */
+.sec{padding:clamp(56px,8vw,96px) 0}
+.sec + .sec{border-top:1px solid var(--ink-12)}
+.inner{max-width:1000px;margin:0 auto}
+.sec-head{max-width:50ch;margin:0 auto clamp(52px,8vw,96px);text-align:center}
+.sec-head h2{font-family:var(--kr-display);font-weight:600;font-size:clamp(1.35rem,2.6vw,1.85rem);
+  line-height:1.35;letter-spacing:-.03em;margin-top:12px}
+.sec-head h2 em{font-style:normal;font-weight:700;color:var(--accent)}
+.sec-head h2.en{font-family:var(--serif);font-weight:400;letter-spacing:0;
+  font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1.15;margin-top:18px}
+.sec-head h2.en em{font-style:italic;font-weight:500;color:inherit}
+.sec-head p + p{margin-top:10px}
+.sec-head p{font-family:var(--kr-display);color:var(--ink-55);margin-top:16px;font-size:.92rem;line-height:1.8}
+.beats{display:flex;flex-direction:column;gap:16px;max-width:800px;margin:0 auto}
+.beats > div{border:1px solid var(--ink-12);border-radius:20px;text-align:center;
+  padding:clamp(34px,4.5vw,52px) clamp(24px,4vw,52px)}
+.beats h3{font-family:var(--kr-display);font-weight:600;letter-spacing:-.03em;line-height:1.35;
+  font-size:clamp(1rem,1.7vw,1.18rem)}
+.beats p{font-family:var(--kr-display);margin-top:12px;font-size:clamp(.86rem,1.15vw,.92rem);
+  color:var(--ink-55);line-height:1.75}
+
+#features{padding-top:clamp(60px,9vw,104px);padding-bottom:clamp(64px,9vw,112px)}
+#features .sec-head{margin-bottom:clamp(56px,8vw,88px);max-width:none}
+.sec-head .intro{max-width:50ch;margin-left:auto;margin-right:auto}
+.sec-head .belief{white-space:nowrap;margin-top:12px}
+
+.steps{display:grid;max-width:900px;margin:0 auto}
+.step{display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,1.1fr);
+  gap:clamp(16px,3vw,36px);align-items:start;padding:28px 0;border-top:1px solid var(--ink-12)}
+.step:last-child{border-bottom:1px solid var(--ink-12)}
+.step .n{font-family:var(--serif);font-style:italic;font-size:1.05rem;
+  color:var(--pink-deep);padding-top:2px}
+.step h3{font-family:var(--kr-display);font-weight:600;letter-spacing:-.03em;line-height:1.35;
+  font-size:clamp(.95rem,1.5vw,1.08rem)}
+.step p{font-family:var(--kr-display);color:var(--ink-55);
+  font-size:clamp(.85rem,1.05vw,.9rem);line-height:1.75}
+@media(max-width:760px){.step{grid-template-columns:40px 1fr}.step p{grid-column:2}}
+
+.cta-band{background:var(--pink-soft);padding:clamp(46px,7vw,78px) clamp(20px,4vw,40px);
+  text-align:center;border-radius:18px;margin-top:clamp(40px,6vw,72px)}
+.cta-band h2{font-family:var(--kr-display);font-weight:600;font-size:clamp(1.4rem,2.8vw,2rem);
+  line-height:1.3;letter-spacing:-.03em}
+.cta-band h2 em{font-style:normal;font-weight:700;color:var(--accent)}
+.cta-band p{font-family:var(--kr-display);color:var(--ink-55);margin-top:12px;font-size:.92rem}
+.cta-band .btn{margin-top:28px}
+
+.foot{padding:30px 0 46px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;
+  font-size:.8rem;color:var(--ink-55)}
+.foot .logo{font-size:1.15rem;padding-bottom:0;margin-right:auto}
+.foot a:hover{color:var(--accent)}
+.foot-contact{display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-left:auto;text-align:right}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ============================ BUILDER ============================ */
+.build-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding-bottom:20px;margin-bottom:24px;border-bottom:1px solid var(--ink-12)}
+.build-head .swatches{margin-top:0;margin-left:auto;justify-content:flex-end}
+.autosave{font-size:.76rem;color:var(--ink-32);transition:opacity .3s ease}
+.savenote{font-size:.75rem;color:var(--ink-32);line-height:1.5;margin-top:10px}
+.citem .when{font-size:.62rem;color:var(--ink-32);display:block}
+
+.app-body{display:grid;grid-template-columns:330px minmax(0,1fr);
+  gap:clamp(16px,2.4vw,26px);align-items:start}
+@media(max-width:960px){.app-body{grid-template-columns:1fr}}
+
+.panel{background:#FBF8F9;border:1px solid var(--ink-06);border-radius:var(--r);padding:22px 20px 24px}
+.panel + .panel{margin-top:16px}
+.panel h2{font-family:var(--kr);font-size:.98rem;font-weight:600;letter-spacing:-.02em;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px}
+.panel h2 .count{font-family:var(--kr);font-size:.74rem;font-weight:400;color:var(--ink-32);margin-left:auto}
+
+.field{margin-bottom:13px}
+.field label{display:block;font-family:var(--kr);font-weight:500;font-size:.7rem;letter-spacing:.02em;
+  color:var(--ink-32);margin-bottom:6px}
+.field input{width:100%;font-family:var(--kr);font-size:.9rem;color:var(--ink);
+  padding:9px 11px;border:1px solid var(--ink-12);border-radius:9px;background:#fff;transition:border-color .18s ease}
+.field input:hover{border-color:var(--ink-32)}
+.field input:focus{border-color:var(--accent);outline:none}
+.row3{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:9px}
+
+.slots{display:flex;flex-direction:column;gap:10px;margin-bottom:11px}
+.slot{border:1px solid var(--ink-12);border-radius:11px;padding:11px 11px 12px;background:#FDFBFC}
+.slot-top{display:flex;align-items:center;margin-bottom:8px}
+.slot-top .sl{font-family:var(--kr);font-weight:500;font-size:.7rem;color:var(--ink-32)}
+.slot-top .rm{margin-left:auto;border:none;background:transparent;cursor:pointer;
+  font-size:.72rem;color:var(--ink-32);padding:3px 7px;border-radius:6px}
+.slot-top .rm:hover{color:var(--accent);background:var(--ink-06)}
+.daypick{display:flex;gap:5px;margin-bottom:8px}
+.daypick button{flex:1;padding:8px 0;border:1px solid var(--ink-12);background:#fff;border-radius:8px;
+  font-size:.83rem;font-weight:500;color:var(--ink-55);cursor:pointer;transition:all .16s ease}
+.daypick button:hover{border-color:var(--ink-32)}
+.daypick button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.timepair{display:grid;grid-template-columns:1fr;gap:8px}
+.timefield{display:grid;grid-template-columns:32px minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center}
+.time-label{font-size:.72rem;color:var(--ink-55)}
+.timepart{position:relative;display:flex;align-items:center;min-width:0}
+.timepart span{position:absolute;right:6px;pointer-events:none;font-size:.7rem;color:var(--ink-55)}
+.timepair .timepart input{padding-right:23px}
+.timepair select,.timepair input{width:100%;min-width:0;-webkit-appearance:none;appearance:none;
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:.86rem;color:var(--ink);text-align:center;
+  padding:8px 4px;border:1px solid var(--ink-12);border-radius:8px;background:#fff}
+.timepair select:hover,.timepair input:hover{border-color:var(--ink-32)}
+.timepair select:focus,.timepair input:focus{border-color:#8E8E93;background:#E5E5E7;outline:none;box-shadow:0 0 0 2px rgba(90,90,95,.12)}
+.timefield:focus-within{border-radius:8px;background:#F1F1F3}
+.time-help{font-size:.72rem;color:var(--ink-55);margin-bottom:10px}
+.time-error{font-size:.75rem;color:#A12E45;line-height:1.5;margin-top:7px}
+.time-error:empty{display:none}
+.timepair .dash{text-align:center;color:var(--ink-32);font-size:.75rem}
+.durs{display:flex;gap:4px;margin-top:7px;flex-wrap:wrap}
+.durs button{flex:1;min-width:38px;padding:5px 0;border:1px solid var(--ink-12);background:#fff;
+  border-radius:7px;font-family:var(--kr);font-size:.72rem;color:var(--ink-32);cursor:pointer;
+  transition:all .16s ease}
+.durs button:hover{border-color:var(--pink-deep);color:var(--accent)}
+.durs button[aria-pressed="true"]{border-color:#A6A6AB;color:var(--ink);background:#E5E5E7}
+
+.addslot{width:100%;border:1px dashed var(--ink-12);background:transparent;border-radius:10px;
+  padding:10px;font-size:.83rem;color:var(--ink-55);cursor:pointer;font-weight:500;
+  transition:all .16s ease;margin-bottom:13px}
+.addslot:hover:not(:disabled){border-color:var(--pink-deep);color:var(--accent);background:var(--pink-soft)}
+.addslot:disabled{opacity:.4;cursor:not-allowed}
+
+.colorpick{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.colorpick button{aspect-ratio:1;width:100%;border-radius:8px;border:1px solid rgba(42,31,38,.14);
+  cursor:pointer;transition:transform .16s ease,box-shadow .16s ease;position:relative;padding:0}
+.colorpick button:hover{transform:translateY(-2px)}
+.colorpick button::after{content:"";position:absolute;inset:0;margin:auto;
+  width:9px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(-45deg) translate(1px,-2px);opacity:0;transition:opacity .16s ease}
+.colorpick button[aria-pressed="true"]{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ink)}
+.colorpick button[aria-pressed="true"]::after{opacity:.75}
+
+.formmsg{font-size:.8rem;margin:2px 0 10px;display:none;line-height:1.45;color:var(--accent)}
+.formmsg.show{display:block}
+.actions{display:flex;gap:8px;margin-top:4px}
+.actions .btn{flex:1;text-align:center;padding:11px 14px}
+
+.clist{display:flex;flex-direction:column;gap:7px}
+.citem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;
+  background:var(--ink-06);transition:background .16s ease}
+.citem:hover{background:rgba(42,31,38,.10)}
+.citem .dot{width:11px;height:11px;border-radius:4px;flex:none}
+.citem .meta{min-width:0;flex:1}
+.citem .nm{font-size:.87rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.citem .tm{font-family:var(--kr);font-size:.7rem;color:var(--ink-32);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.icobtn{border:none;background:transparent;cursor:pointer;color:var(--ink-32);font-size:.74rem;
+  padding:5px 6px;border-radius:6px;flex:none}
+.icobtn:hover{color:var(--ink);background:rgba(42,31,38,.09)}
+.icobtn.del:hover{color:var(--accent)}
+.empty{font-size:.85rem;color:var(--ink-32);line-height:1.6;padding:6px 2px}
+
+.stats{display:flex;gap:18px;flex-wrap:wrap}
+.stat .k{font-family:var(--kr);font-weight:500;font-size:.7rem;color:var(--ink-32)}
+.stat .v{font-family:var(--kr);font-weight:600;font-size:1.4rem;letter-spacing:-.02em;line-height:1.3}
+
+.canvas-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+#ttName{font-family:var(--serif);font-weight:500;font-size:1.25rem;letter-spacing:-.01em;color:var(--ink);
+  border:1px solid transparent;background:transparent;padding:6px 9px;border-radius:9px;min-width:180px;max-width:100%}
+#ttName:hover{border-color:var(--ink-12)}
+#ttName:focus{border-color:var(--accent);outline:none;background:#fff}
+.canvas-head .btn{padding:9px 16px;font-size:.82rem}
+.canvas-tools{margin-left:auto;display:flex;gap:8px}
+#appTT .block{cursor:pointer;justify-content:flex-start}
+#appTT .block:hover{transform:translateY(-1px);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.055),0 5px 14px rgba(42,31,38,.20)}
+.ghost-row{display:flex;align-items:center;justify-content:center;height:100%;
+  font-size:.85rem;color:var(--g-mut);font-family:var(--kr)}
+
+.modal{position:fixed;inset:0;z-index:200;background:rgba(42,31,38,.55);
+  display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-in{background:#fff;border-radius:16px;max-width:640px;width:100%;
+  max-height:90vh;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 30px 80px -20px rgba(42,31,38,.5)}
+.modal-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--ink-12);
+  font-weight:600;font-size:.95rem;flex-wrap:wrap}
+.modal-head .icobtn{margin-left:auto}
+.modeswitch{display:flex;gap:4px;background:var(--ink-06);border-radius:99px;padding:3px}
+.modeswitch button{border:none;background:transparent;cursor:pointer;border-radius:99px;
+  padding:6px 13px;font-size:.78rem;font-weight:500;color:var(--ink-55);transition:all .16s ease}
+.modeswitch button[aria-pressed="true"]{background:#fff;color:var(--ink);
+  box-shadow:0 1px 3px rgba(42,31,38,.15)}
+.bgrow{display:flex;align-items:center;gap:10px;padding:11px 16px;
+  border-bottom:1px solid var(--ink-12);flex-wrap:wrap}
+.bglabel{font-size:.78rem;font-weight:500;color:var(--ink-55);flex:none}
+.bgrow .modeswitch{flex-wrap:wrap}
+.modal-img{padding:18px;overflow:auto;background:var(--paper);display:flex;justify-content:center}
+.modal-img img{max-width:100%;max-height:58vh;width:auto;height:auto;border-radius:10px;
+  box-shadow:0 8px 26px -10px rgba(42,31,38,.35);background:#fff;
+  -webkit-touch-callout:default;transition:box-shadow .3s ease}
+.modal-img img.nudge{box-shadow:0 0 0 4px var(--pink-deep),0 8px 26px -10px rgba(42,31,38,.35)}
+.modal-foot{padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  border-top:1px solid var(--ink-12)}
+.modal-foot p{font-size:.76rem;color:var(--ink-32);flex:1;min-width:180px;line-height:1.45}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-size:.85rem;z-index:100;
+  transition:opacity .25s ease,transform .25s ease}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:640px){
+  :root{--pad:14px}
+  .folderbar{padding:32px 4px 0 4px;gap:8px}
+  .logo{font-size:1.25rem;padding-bottom:9px}
+  .tab{padding:9px 14px;font-size:.79rem;border-radius:11px 11px 0 0}
+  .tab[aria-selected="true"]{padding:11px 15px 15px;margin-bottom:-5px}
+  .sheet{padding:26px 13px 30px;border-radius:14px}
+  .tt{padding:10px 8px}
+  .grid{grid-template-columns:23px repeat(5,minmax(0,1fr));column-gap:2px;min-width:0;--g-gap:2px}
+  .day{font-size:.68rem}
+  .time{font-size:.55rem;padding-right:3px}
+  .block{padding:4px 5px;border-radius:5px;margin-bottom:1px}
+  .block b{font-size:.61rem}
+  .block span,.block em{font-size:.55rem}
+  .tt-head{flex-wrap:wrap;gap:2px 8px}
+  .tt-sub{font-size:.68rem;margin-left:0;width:100%}
+  .swatches{gap:6px;margin-top:14px}
+  .sw{font-size:.72rem;padding:4px 10px 4px 6px}
+  .sw .dots i{width:9px;height:9px}
+  .hero h1{font-size:clamp(1.9rem,9vw,2.4rem)}
+  .hero-cta{flex-direction:column;gap:8px}
+  .hero-cta .btn{width:100%}
+  .marquee{margin-top:30px}
+  .beats > div{padding:28px 20px}
+  .cta-band{padding:40px 18px;border-radius:16px}
+  .build-head{padding-bottom:16px;margin-bottom:18px}
+  .build-head .swatches{margin-left:0;justify-content:flex-start}
+  .panel{padding:18px 15px 20px}
+  .row3{grid-template-columns:minmax(0,1fr) 56px;gap:7px}
+  .durs button{min-width:0;font-size:.68rem;padding:5px 0}
+  .timepair{gap:4px}
+  .timepair select,.timepair input{font-size:.8rem;padding:8px 2px}
+  .canvas-head{gap:8px}
+  #ttName{width:100%;min-width:0}
+  .canvas-tools{width:100%;margin-left:0}
+  .canvas-tools .btn{flex:1}
+  .stats{gap:14px}
+  .stat .v{font-size:1.25rem}
+  .modal{padding:10px}
+  .modal-head{gap:8px;padding:12px 14px;font-size:.88rem}
+  .modeswitch button{padding:5px 10px;font-size:.72rem}
+  .modal-img{padding:12px}
+  .modal-img img{max-height:52vh}
+  .modal-foot{padding:13px 14px;gap:10px}
+  .modal-foot p{font-size:.72rem}
+  .foot{gap:12px;font-size:.75rem;padding-bottom:36px}
+}
+@media(max-width:860px){
+  .hero .lead{white-space:normal;max-width:34ch}
+  .sec-head .belief{white-space:normal;max-width:40ch;margin-left:auto;margin-right:auto}
+}
+@media(max-width:400px){
+  .folderbar{flex-wrap:wrap;justify-content:flex-start}
+  .logo{width:100%;padding-bottom:6px}
+  .tabs{width:100%}
+  .tab{flex:1;padding:9px 8px;text-align:center}
+  .tab[aria-selected="true"]{padding:11px 8px 15px}
+}
+/* iOS zooms the page whenever a focused input is under 16px — keep every
+   touch-target input at exactly 16px so tapping a field stays put */
+@media(pointer:coarse){
+  .field input,#ttName{font-size:16px}
+  .timepair select,.timepair input{font-size:16px;padding:8px 2px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+
+/* ============================ feedback card ============================ */
+#fbModal{z-index:260}
+.fb-in{max-width:430px}
+.fb-body{padding:20px 20px 4px}
+.fb-q{font-size:.92rem;font-weight:600;letter-spacing:-.02em;line-height:1.5}
+.fb-q.second{margin-top:26px}
+.fb-rate{display:flex;gap:7px;margin-top:13px}
+.fb-rate button{flex:1;padding:12px 0;border:1px solid var(--ink-12);background:#fff;border-radius:10px;
+  font-family:inherit;font-size:.95rem;font-weight:600;color:var(--ink-55);cursor:pointer;
+  transition:background .16s ease,border-color .16s ease,color .16s ease}
+.fb-rate button:hover{border-color:var(--ink-32)}
+.fb-rate button[aria-pressed="true"]{background:var(--pink);border-color:var(--pink-deep);color:var(--accent)}
+.fb-scale{display:flex;justify-content:space-between;margin-top:7px;font-size:.7rem;color:var(--ink-32)}
+.fb-opts{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px;padding-bottom:16px}
+.fb-opts button{border:1px solid var(--ink-12);background:#fff;border-radius:99px;padding:8px 14px;
+  font-family:inherit;font-size:.8rem;font-weight:500;color:var(--ink-55);cursor:pointer;
+  transition:background .16s ease,border-color .16s ease,color .16s ease}
+.fb-opts button:hover{border-color:var(--ink-32)}
+.fb-opts button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+#fbSubmit{min-width:104px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="folder" id="folder">
+
+    <div class="folderbar">
+      <span class="logo">Timo</span>
+      <div class="tabs" role="tablist" aria-label="페이지">
+        <button class="tab" role="tab" data-page="home" aria-selected="true" aria-controls="pageHome" style="color: #000000">Home</button>
+        <button class="tab" role="tab" data-page="build" aria-selected="false" aria-controls="pageBuild" style="color: #000000">시간표 만들기</button>
+      </div>
+    </div>
+
+    <div class="sheet">
+
+      <div id="pageHome" role="tabpanel">
+
+        <div class="hero">
+          <p class="eyebrow" style="color: #3E353B8C">대학생을 위한 시간표</p>
+          <h1>Design your <em>semester</em>.</h1>
+          <p class="lead" style="color: #3E353B8C">강의를 담고, 색을 고르고, <br>자랑하고 싶은 시간표를 완성하세요.</p>
+          <div class="hero-cta">
+            <button class="btn btn-pink btn-lg js-open" data-location="hero">시간표 만들기</button>
+            <button class="btn btn-ghost btn-lg js-scroll" data-to="how">만드는 법 보기</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="tt tt-anim" id="demoTT" data-theme="peach" style="margin-top:26px">
+            <div class="tt-head">
+              <span class="tt-title">2026 - 2</span>
+              <span class="tt-sub">15학점 · 공강 금요일</span>
+            </div>
+            <div class="grid" id="demoGrid"></div>
+          </div>
+
+          <div class="swatches" role="group" aria-label="시간표 테마">
+            <span class="lbl">THEME</span>
+            <button class="sw js-demo-theme" data-theme="peach" aria-pressed="true"><span class="dots"><i style="background:#F8BCCF"></i><i style="background:#FEE4E2"></i><i style="background:#FFF6E4"></i></span>Peach</button>
+          <button class="sw js-demo-theme" data-theme="lemonade" aria-pressed="false"><span class="dots"><i style="background:#FEF7B9"></i><i style="background:#D6E5F0"></i><i style="background:#3D5C7B"></i></span>Lemonade</button>
+          <button class="sw js-demo-theme" data-theme="opal" aria-pressed="false"><span class="dots"><i style="background:#CDDFEB"></i><i style="background:#F1E2F9"></i><i style="background:#D4F0EA"></i></span>Opal</button>
+          <button class="sw js-demo-theme" data-theme="sage" aria-pressed="false"><span class="dots"><i style="background:#99A98F"></i><i style="background:#C1D0B5"></i><i style="background:#FFF8DE"></i></span>Sage</button>
+          <button class="sw js-demo-theme" data-theme="blueberries" aria-pressed="false"><span class="dots"><i style="background:#0A0C18"></i><i style="background:#5A7495"></i><i style="background:#AEC3D9"></i></span>Blueberries</button>
+          <button class="sw js-demo-theme" data-theme="cookies" aria-pressed="false"><span class="dots"><i style="background:#796B63"></i><i style="background:#D6C7BB"></i><i style="background:#F6EDDC"></i></span>Cookies &amp; Cream</button>
+          </div>
+        </div>
+
+        <div class="marquee" aria-hidden="true" style="background-color: #FFE8F1"><div class="track" id="track"></div></div>
+
+        <section class="sec" id="features">
+          <div class="inner">
+            <div class="sec-head rv">
+              <p class="eyebrow">왜 Timo인가</p>
+              <h2 class="en">Time, and More.</h2>
+              <p class="intro">Timo는 Time + More에서 시작되었습니다.<br>시간표를 더 예쁘고 더 나답게 만듭니다.</p>
+              
+            </div>
+            <div class="beats">
+              <div class="rv"><h3>취향을 담습니다.</h3>
+                <p>수업마다 원하는 색을 선택하고, 나다운 시간표를 완성하세요.</p></div><div class="rv"><h3>기억에 남도록 저장합니다.</h3>
+                <p>완성한 시간표를 고화질 이미지로 저장하고 언제든 공유하세요.</p></div>
+              
+            </div>
+          </div>
+        </section>
+
+        <section class="sec" id="how">
+          <div class="inner">
+            <div class="sec-head rv"><p class="eyebrow">만드는 법</p><h2 class="en"><em>3 Steps</em></h2></div>
+            <div class="steps">
+              <div class="step rv"><span class="n">01</span><h3>강의 담기</h3>
+                <p>강의명과 강의실을 적고 요일·시간을 고릅니다. 요일마다 시간이 다르면 시간 블록을 하나 더 추가하면 됩니다.</p></div>
+              <div class="step rv"><span class="n">02</span><h3>스타일 고르기</h3>
+                <p>팔레트와 색을 바꿔가며 마음에 드는 조합을 찾습니다. 담은 강의를 눌러 언제든 다시 고칠 수 있습니다.</p></div>
+              <div class="step rv"><span class="n">03</span><h3>공유하기</h3>
+                <p>이미지로 내보냅니다. 학점 합계와 공강 요일도 함께 확인할 수 있습니다.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="cta-band">
+          <h2>이번 학기, <em style="color: #B8547C">어떻게 생겼나요?</em></h2><p>가입 없이 바로 시작할 수 있습니다.</p>
+          
+          <button class="btn btn-pink btn-lg js-open" data-location="cta_band">시간표 만들기</button>
+        </div>
+      </div>
+
+      <div id="pageBuild" class="hidden" role="tabpanel" data-theme="peach">
+
+        <div class="build-head">
+          <span class="autosave" id="autosave"></span>
+          <div class="swatches" role="group" aria-label="시간표 테마">
+            <span class="lbl">THEME</span>
+            <button class="sw js-app-theme" data-theme="peach" aria-pressed="true"><span class="dots"><i style="background:#F8BCCF"></i><i style="background:#FEE4E2"></i><i style="background:#FFF6E4"></i></span>Peach</button>
+          <button class="sw js-app-theme" data-theme="lemonade" aria-pressed="false"><span class="dots"><i style="background:#FEF7B9"></i><i style="background:#D6E5F0"></i><i style="background:#3D5C7B"></i></span>Lemonade</button>
+          <button class="sw js-app-theme" data-theme="opal" aria-pressed="false"><span class="dots"><i style="background:#CDDFEB"></i><i style="background:#F1E2F9"></i><i style="background:#D4F0EA"></i></span>Opal</button>
+          <button class="sw js-app-theme" data-theme="sage" aria-pressed="false"><span class="dots"><i style="background:#99A98F"></i><i style="background:#C1D0B5"></i><i style="background:#FFF8DE"></i></span>Sage</button>
+          <button class="sw js-app-theme" data-theme="blueberries" aria-pressed="false"><span class="dots"><i style="background:#0A0C18"></i><i style="background:#5A7495"></i><i style="background:#AEC3D9"></i></span>Blueberries</button>
+          <button class="sw js-app-theme" data-theme="cookies" aria-pressed="false"><span class="dots"><i style="background:#796B63"></i><i style="background:#D6C7BB"></i><i style="background:#F6EDDC"></i></span>Cookies &amp; Cream</button>
+          </div>
+        </div>
+
+  <div class="app-body">
+    <div>
+      <div class="panel">
+        <h2 id="formTitle">강의 추가</h2>
+
+        <div class="field">
+          <label for="fName">강의명</label>
+          <input id="fName" type="text" placeholder="예: 미시경제이론" maxlength="24" autocomplete="off">
+        </div>
+
+        <div class="row3">
+          <div class="field"><label for="fPlace">강의실</label>
+            <input id="fPlace" type="text" placeholder="포B152" maxlength="18" autocomplete="off"></div>
+          <div class="field"><label for="fCredit">학점</label>
+            <input id="fCredit" type="number" value="3" min="0" max="9" step="1"></div>
+        </div>
+
+        <div class="field" style="margin-bottom:8px"><label>요일과 시간</label></div>
+        <p class="time-help">시·분을 직접 입력하거나 목록에서 선택하세요. 분은 5분 단위입니다.</p>
+        <div class="slots" id="slotArea"></div>
+        <button class="addslot" id="btnAddSlot" type="button">+ 다른 시간 추가</button>
+
+        <div class="field"><label>색</label><div class="colorpick" id="colorPick"></div></div>
+
+        <p class="formmsg" id="formMsg"></p>
+
+        <div class="actions">
+          <button class="btn btn-solid" id="btnSave">강의 담기</button>
+          <button class="btn btn-ghost hidden" id="btnCancel">취소</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>담은 강의 <span class="count" id="courseCount">0개</span></h2>
+        <div class="clist" id="courseList"></div>
+      </div>
+
+      
+
+      <div class="panel">
+        <h2>보관함 <span class="count" id="saveCount">0개</span></h2>
+        <button class="btn btn-pink" id="btnSaveTT" style="width:100%">현재 시간표 저장</button>
+        <div class="clist" id="savedList" style="margin-top:12px"></div>
+        <p class="savenote" id="saveNote"></p>
+      </div><div class="panel">
+        <h2>이번 학기</h2>
+        <div class="stats">
+          <div class="stat"><div class="k">학점</div><div class="v" id="stCredit">0</div></div>
+          <div class="stat"><div class="k">강의</div><div class="v" id="stCourse">0</div></div>
+          <div class="stat"><div class="k">공강</div><div class="v" id="stFree">—</div></div>
+          <div class="stat"><div class="k">첫 수업</div><div class="v" id="stFirst">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="canvas-head">
+        <input id="ttName" value="2026 - 2" maxlength="24" placeholder="2026 - 2" aria-label="시간표 이름">
+        <div class="canvas-tools">
+          <button class="btn btn-ghost" id="btnClear">전체 지우기</button>
+          <button class="btn btn-pink" id="btnExport">이미지로 저장</button>
+        </div>
+      </div>
+      <div class="tt raised" id="appTT" data-theme="peach">
+        <div class="tt-head">
+          <span class="tt-title" id="ttHeadName" style="font-family: var(--serif)">2026 - 2</span>
+          <span class="tt-sub" id="ttHeadSub">0학점</span>
+        </div>
+        <div class="grid" id="appGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="wrap">
+  <div class="foot">
+    <span class="logo">Timo</span>
+    <div class="foot-contact">
+      <span>© 2026 Timo</span>
+      <a href="mailto:from.yunni@gmail.com">from.yunni@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal hidden" id="modal">
+  <div class="modal-in" role="dialog" aria-modal="true" aria-label="시간표 이미지">
+    <div class="modal-head">
+      <span>시간표 이미지</span>
+      <div class="modeswitch" role="group" aria-label="이미지 형식">
+        <button class="js-mode" data-mode="wall" aria-pressed="true">아이폰 배경화면</button>
+        <button class="js-mode" data-mode="ipad" aria-pressed="false">아이패드 배경화면</button>
+        <button class="js-mode" data-mode="card" aria-pressed="false">가로 카드</button>
+      </div>
+      <div class="modeswitch hidden" id="ipadOrient" role="group" aria-label="아이패드 비율">
+        <button class="js-ipad-o" data-o="portrait" aria-pressed="true">3:4 세로</button>
+        <button class="js-ipad-o" data-o="landscape" aria-pressed="false">4:3 가로</button>
+      </div>
+      <button class="icobtn" id="mClose" aria-label="닫기">닫기</button>
+    </div>
+    <div class="bgrow" id="bgRow" role="group" aria-label="배경 무늬">
+      <span class="bglabel">배경</span>
+      <div class="modeswitch">
+        <button class="js-bg" data-bg="plain" aria-pressed="true">없음</button>
+        <button class="js-bg" data-bg="dots" aria-pressed="false">땡땡이</button>
+        <button class="js-bg" data-bg="hearts" aria-pressed="false">하트</button>
+        <button class="js-bg" data-bg="floral" aria-pressed="false">꽃무늬</button>
+        <button class="js-bg" data-bg="stripe" aria-pressed="false">스트라이프</button>
+        <button class="js-bg" data-bg="gingham" aria-pressed="false">체크</button>
+        <button class="js-bg" data-bg="blush" aria-pressed="false">블러쉬</button>
+      </div>
+    </div>
+    <div class="modal-img"><img id="mImg" alt="내보낸 시간표"></div>
+    <div class="modal-foot">
+      <a class="btn btn-pink" id="mDl" download="">이미지 저장</a>
+      <p>이미지는 다운로드 폴더에 저장됩니다. 휴대폰에서 사진 앱에 저장하려면 위 이미지를 길게 눌러 주세요. 다운로드가 지원되지 않는 앱 내 브라우저에서도 길게 눌러 저장할 수 있습니다.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="fbModal">
+  <div class="modal-in fb-in" role="dialog" aria-modal="true" aria-label="만족도 조사">
+    <div class="modal-head">
+      <span>잠깐, 한 가지만요</span>
+      <button class="icobtn" id="fbClose" aria-label="닫기">닫기</button>
+    </div>
+    <div class="fb-body">
+      <p class="fb-q">만든 시간표가 마음에 드셨나요?</p>
+      <div class="fb-rate" id="fbRate" role="group" aria-label="만족도 점수">
+        <button type="button" data-r="1" aria-pressed="false">1</button>
+        <button type="button" data-r="2" aria-pressed="false">2</button>
+        <button type="button" data-r="3" aria-pressed="false">3</button>
+        <button type="button" data-r="4" aria-pressed="false">4</button>
+        <button type="button" data-r="5" aria-pressed="false">5</button>
+      </div>
+      <div class="fb-scale"><span>아쉬워요</span><span>마음에 들어요</span></div>
+      <p class="fb-q second">Timo에 어떤 기능이 추가되면 좋을까요?</p>
+      <div class="fb-opts" id="fbOpts" role="group" aria-label="기능 요청">
+        <button type="button" data-f="bg_color" aria-pressed="false">배경색 직접 변경</button>
+        <button type="button" data-f="more_themes" aria-pressed="false">더 많은 테마</button>
+        <button type="button" data-f="more_patterns" aria-pressed="false">더 많은 패턴</button>
+        <button type="button" data-f="share" aria-pressed="false">공유 기능 강화</button>
+        <button type="button" data-f="other" aria-pressed="false">기타</button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-pink" id="fbSubmit">보내기</button>
+      <p>익명으로 집계되며 Timo를 다듬는 데에만 씁니다.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+window.__timoTrack = window.__timoTrack || function(name,params){
+  if(typeof window.gtag==="function"){
+    try{ window.gtag("event",name,params||{}); }catch(e){}
+  }
+};
+
+/* ============================================================
+   analytics helpers
+   GA4로 나가는 값은 전부 범주형/숫자형이다. 강의명·교수·강의실·
+   시간표 이름 등 사용자가 직접 입력한 문자열은 절대 넣지 않는다.
+   ============================================================ */
+var LS={
+  get:function(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+var SS={
+  get:function(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } },
+  set:function(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+};
+
+function merge(a,b){
+  var o={},k;
+  if(a) for(k in a) if(Object.prototype.hasOwnProperty.call(a,k)) o[k]=a[k];
+  if(b) for(k in b) if(Object.prototype.hasOwnProperty.call(b,k)) o[k]=b[k];
+  return o;
+}
+
+/* UTM: 최초 진입 때 읽어 세션에 보관 → Home↔Builder를 오가도 유지된다.
+   값이 없으면 네 키 모두 "direct"로 통일한다. */
+var UTM=(function(){
+  var keys=["utm_source","utm_medium","utm_campaign","utm_content"], found=null;
+  try{
+    var q=new URLSearchParams(location.search);
+    keys.forEach(function(k){
+      var v=q.get(k);
+      if(v){ found=found||{}; found[k]=String(v).slice(0,80); }
+    });
+  }catch(e){}
+  if(found){ SS.set("timo:utm",JSON.stringify(found)); }
+  else{ try{ var raw=SS.get("timo:utm"); if(raw) found=JSON.parse(raw); }catch(e2){ found=null; } }
+  var out={};
+  keys.forEach(function(k){ out[k]=(found&&found[k])?found[k]:"direct"; });
+  return out;
+})();
+function withUTM(p){
+  p=p||{};
+  for(var k in UTM){
+    if(Object.prototype.hasOwnProperty.call(UTM,k) && !(k in p)) p[k]=UTM[k];
+  }
+  return p;
+}
+
+function courseCount(){ return (typeof courses!=="undefined"&&courses)?courses.length:0; }
+function creditTotal(){
+  return (typeof courses!=="undefined"&&courses)
+    ? courses.reduce(function(a,c){return a+(c.credit||0);},0) : 0;
+}
+function currentTheme(){
+  var el=document.getElementById("appTT");
+  return (el&&el.dataset.theme)||"peach";
+}
+/* 가로 카드는 언제나 무늬 없이 그려지므로 plain으로 기록한다 */
+function effectiveBg(){
+  if(typeof exportMode!=="undefined"&&exportMode==="card") return "plain";
+  return (typeof exportBg!=="undefined"&&exportBg)||"plain";
+}
+function getAnalyticsContext(){
+  return {
+    theme:currentTheme(),
+    bg:effectiveBg(),
+    mode:(typeof exportMode!=="undefined"&&exportMode)||"wall",
+    course_count:courseCount(),
+    credit_total:creditTotal()
+  };
+}
+function trackValidation(reason){
+  window.__timoTrack("validation_error",{reason:reason,course_count:courseCount()});
+}
+
+/* 제작 소요시간: 빌더 최초 진입 시각을 세션에 한 번만 기록해 두고,
+   내보내기가 여러 번 일어나도 같은 기준점에서 잰다 */
+var BUILDER_START="timo:builder_started_at";
+function markBuilderStart(){
+  if(!SS.get(BUILDER_START)) SS.set(BUILDER_START,String(Date.now()));
+}
+function timeToExport(){
+  var t=parseInt(SS.get(BUILDER_START)||"0",10);
+  if(!t) return 0;
+  var s=Math.round((Date.now()-t)/1000);
+  return (s>=0&&s<36000)?s:0;
+}
+
+/* 첫 강의 등록 — 브라우저당 1회 */
+var firstCourseTracked=false;
+function trackFirstCourse(){
+  if(firstCourseTracked) return;
+  firstCourseTracked=true;
+  Store.get("timo:first_course_tracked").then(function(v){
+    if(v) return;
+    window.__timoTrack("first_course_add",withUTM({course_count:courseCount()}));
+    Store.set("timo:first_course_tracked",true);
+  }).catch(function(){});
+}
+
+/* 재방문 판별 — 식별자를 만들지 않고 방문 여부 플래그만 둔다 */
+var visitTracked=false;
+function trackVisit(hasDraft,savedCount){
+  if(visitTracked) return;
+  visitTracked=true;
+  var vt=LS.get("timo:visited")?"returning":"new";
+  LS.set("timo:visited","1");
+  window.__timoTrack("timo_visit",withUTM({
+    visitor_type:vt,
+    has_draft:!!hasDraft,
+    saved_timetable_count:savedCount||0
+  }));
+}
+
+/* Hero CTA A/B — 배정은 localStorage에 고정, 노출은 세션 1회 */
+var CTA_EXPERIMENT="hero_cta_copy";
+var ctaVariant=(function(){
+  var v=LS.get("timo:cta_variant");
+  if(v!=="A"&&v!=="B"){ v=(Math.random()<0.5)?"A":"B"; LS.set("timo:cta_variant",v); }
+  return v;
+})();
+(function(){
+  var hero=document.querySelector('.js-open[data-location="hero"]');
+  if(hero&&ctaVariant==="B") hero.textContent="3분 만에 시간표 만들기";
+  if(!SS.get("timo:cta_exposed")){
+    SS.set("timo:cta_exposed","1");
+    window.__timoTrack("experiment_exposure",{experiment_name:CTA_EXPERIMENT,variant:ctaVariant});
+  }
+})();
+
+var exportBusy=false;
+var DAYS=["MON","TUE","WED","THU","FRI"];
+var DAYS_KO=["월","화","수","목","금"];
+var START=6*60, LAST=24*60, STEP=1, MAXSLOTS=4;
+var PXMIN=0.7;
+
+function hour12(m){return Math.floor(m/60)%12||12;}
+function fmt(m){return hour12(m)+":"+String(m%60).padStart(2,"0");}
+function choiceTime(m){return (m===1440?'다음 날 오전 ':m<720?'오전 ':'오후 ')+fmt(m);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(m){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m];});}
+function toMin(v){
+  var p=String(v||"").split(":");
+  if(p.length!==2) return null;
+  var h=parseInt(p[0],10), mi=parseInt(p[1],10);
+  if(isNaN(h)||isNaN(mi)) return null;
+  return Math.max(0,Math.min(24*60,h*60+mi));
+}
+
+function renderGrid(el,list,opts){
+  opts=opts||{};
+  var range=timeRange(list), top=range.top, bottom=range.bottom, n=range.n;
+
+  el.style.gridTemplateRows="22px repeat("+n+","+(opts.pxmin||PXMIN)+"px)";
+  var h='<div class="day"></div>';
+  DAYS.forEach(function(d){h+='<div class="day">'+d+'</div>';});
+  for(var m=top;m<bottom;m+=60){
+    h+='<div class="time" style="grid-column:1;grid-row:'+(m-top+2)+' / span '+Math.min(60,bottom-m)+'">'+(m%60 ? fmt(m) : hour12(m))+'</div>';}
+  for(var d=1;d<=5;d++){
+    h+='<div class="cellcol" style="grid-column:'+(d+1)+';grid-row:2 / span '+n+'"></div>';}
+  if(!list.length&&opts.emptyText){
+    h+='<div class="ghost-row" style="grid-column:2 / span 5;grid-row:2 / span '+n+'">'+opts.emptyText+'</div>';}
+  var k=0;
+  list.forEach(function(c){
+    c.slots.forEach(function(s){
+      var r=s.start-top+2, span=s.end-s.start;
+      var meta=[c.place,c.prof].filter(Boolean).join(" · ");
+      var span2 = opts.detail
+        ? (meta?'<span>'+esc(meta)+'</span>':'')+'<em>'+fmt(s.start)+'–'+fmt(s.end)+'</em>'
+        : '<span>'+esc(meta||fmt(s.start)+"–"+fmt(s.end))+'</span>';
+      h+='<div class="block"'+(opts.clickable?' data-id="'+c.id+'" role="button" tabindex="0"':'')+
+         ' style="grid-column:'+(s.day+2)+';grid-row:'+r+' / span '+span+
+         ';background:var(--c'+c.color+');color:var(--i'+c.color+')'+(opts.anim?';animation-delay:'+(0.2+k*0.05).toFixed(2)+'s':'')+'">'+
+         '<b>'+esc(c.name)+'</b>'+span2+'</div>';
+      k++;
+    });
+  });
+  el.innerHTML=h;
+}
+
+var demo=[
+  {id:"d1",name:"재무관리",place:"경영 213",prof:"",color:1,
+   slots:[{day:0,start:660,end:735},{day:2,start:570,end:645}]},
+  {id:"d2",name:"국제법",place:"법 231",prof:"",color:2,
+   slots:[{day:0,start:750,end:825},{day:3,start:840,end:915}]},
+  {id:"d3",name:"미시경제이론",place:"포B152",prof:"",color:3,
+   slots:[{day:1,start:840,end:915},{day:3,start:930,end:1005}]},
+  {id:"d4",name:"기업경영의 이해",place:"경영 205",prof:"",color:7,
+   slots:[{day:0,start:930,end:1005},{day:2,start:840,end:915}]},
+  {id:"d5",name:"Business Writing",place:"경영B117",prof:"",color:6,
+   slots:[{day:0,start:1020,end:1095},{day:3,start:1020,end:1095}]}
+];
+var demoGrid=document.getElementById("demoGrid");
+if(demoGrid) renderGrid(demoGrid,demo,{anim:true});
+
+var track=document.getElementById("track");
+if(track){var one="";for(var t=0;t<12;t++) one+='<span>Timo · Design your semester</span>';
+  track.innerHTML=one+one;}
+
+function bindThemes(sel,targets){
+  if(!Array.isArray(targets)) targets=[targets];
+  document.querySelectorAll(sel).forEach(function(b){
+    b.addEventListener("click",function(){
+      targets.forEach(function(t){t.dataset.theme=b.dataset.theme;});
+      document.querySelectorAll(sel).forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+    });
+  });
+}
+bindThemes(".js-demo-theme",document.getElementById("demoTT"));
+
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
+},{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+document.querySelectorAll(".rv").forEach(function(el,i){
+  el.style.transitionDelay=(i%3*0.08)+"s";io.observe(el);});
+
+var app=document.getElementById("pageBuild");
+var appTT=document.getElementById("appTT"), appGrid=document.getElementById("appGrid");
+var courses=[], editingId=null, pickedColor=1, uid=0;
+
+var DURS=[30,60,75,90,100,120];
+var rows=[{days:[],start:9*60,end:10*60+30}];
+var slotArea=document.getElementById("slotArea");
+var btnAddSlot=document.getElementById("btnAddSlot");
+
+function timeFields(value,key,index){
+  var title=key==='start'?'시작':'종료', base='time'+index+key;
+  var period=value===1440?'next':value<720?'am':'pm';
+  var hours='',minutes='';
+  for(var n=1;n<=12;n++) hours+='<option value="'+n+'"></option>';
+  for(var n=0;n<60;n+=5) minutes+='<option value="'+String(n).padStart(2,'0')+'"></option>';
+  return '<div class="timefield" data-k="'+key+'"><span class="time-label">'+title+'</span>'+
+    '<select data-part="period" aria-label="'+title+' 오전/오후" aria-describedby="timeError'+index+'">'+
+    '<option value="am"'+(period==='am'?' selected':'')+'>오전</option>'+
+    '<option value="pm"'+(period==='pm'?' selected':'')+'>오후</option>'+
+    (key==='end'?'<option value="next"'+(period==='next'?' selected':'')+'>다음 날 오전</option>':'')+'</select>'+
+    '<label class="timepart"><input type="text" inputmode="numeric" maxlength="2" autocomplete="off" list="'+base+'Hours" data-part="hour" value="'+hour12(value)+'" aria-label="'+title+' 시" aria-describedby="timeError'+index+'"><span>시</span></label>'+
+    '<label class="timepart"><input type="text" inputmode="numeric" maxlength="2" autocomplete="off" list="'+base+'Minutes" data-part="minute" value="'+String(value%60).padStart(2,'0')+'" aria-label="'+title+' 분" aria-describedby="timeError'+index+'"><span>분</span></label>'+
+    '<datalist id="'+base+'Hours">'+hours+'</datalist><datalist id="'+base+'Minutes">'+minutes+'</datalist></div>';
+}
+function parseTimeParts(period,hour,minute){
+  if(!/^\d{1,2}$/.test(hour)||!/^\d{1,2}$/.test(minute)) return NaN;
+  var hr=Number(hour),min=Number(minute);
+  if(hr<1||hr>12||min<0||min>59||min%5) return NaN;
+  if(period==='next') return hr===12&&min===0?1440:NaN;
+  if(period!=='am'&&period!=='pm') return NaN;
+  return (hr%12+(period==='pm'?12:0))*60+min;
+}
+function syncTimeFields(field,value){
+  field.querySelector('[data-part="period"]').value=value===1440?'next':value<720?'am':'pm';
+  field.querySelector('[data-part="hour"]').value=String(hour12(value));
+  field.querySelector('[data-part="minute"]').value=String(value%60).padStart(2,'0');
+}
+function timeSelectionError(row,key,value){
+  if(!Number.isFinite(value)||value%5||value<START||value>LAST)
+    return '시는 1~12, 분은 00~55 사이의 5분 단위로 입력해 주세요. 수업 시간은 오전 6시~밤 12시까지 가능합니다.';
+  if((key==='start' && value>=row.end)||(key==='end' && value<=row.start))
+    return '시작 시간은 종료 시간보다 빨라야 합니다. 종료 시간을 시작 시간보다 늦게 선택해 주세요.';
+  return '';
+}
+function renderSlots(){
+  slotArea.innerHTML=rows.map(function(r,i){
+    return '<div class="slot" data-i="'+i+'">'+
+      '<div class="slot-top"><span class="sl">시간 '+(i+1)+'</span>'+
+      (rows.length>1?'<button type="button" class="rm" data-rm="'+i+'">삭제</button>':'')+'</div>'+
+      '<div class="daypick">'+DAYS_KO.map(function(d,di){
+        return '<button type="button" data-d="'+di+'" aria-pressed="'+(r.days.indexOf(di)>-1)+'">'+d+'</button>';
+      }).join("")+'</div>'+
+      '<div class="timepair">'+
+        timeFields(r.start,'start',i)+timeFields(r.end,'end',i)+
+      '</div>'+
+      '<p id="timeError'+i+'" class="time-error" role="status" aria-live="polite"></p>'+
+      '<div class="durs">'+DURS.map(function(d){
+        return '<button type="button" data-dur="'+d+'"'+
+               (r.end-r.start===d?' aria-pressed="true"':'')+'>'+d+'분</button>';
+      }).join("")+'</div>'+
+      '</div>';
+  }).join("");
+  btnAddSlot.disabled = rows.length>=MAXSLOTS;
+  btnAddSlot.textContent = rows.length>=MAXSLOTS ? "시간 블록은 최대 "+MAXSLOTS+"개" : "+ 다른 시간 추가";
+}
+slotArea.addEventListener("click",function(e){
+  var rm=e.target.closest("[data-rm]");
+  if(rm){rows.splice(+rm.dataset.rm,1);renderSlots();return;}
+  var du=e.target.closest("[data-dur]");
+  if(du){
+    var si=+du.closest(".slot").dataset.i;
+    var nextEnd=rows[si].start+ +du.dataset.dur;
+    var error=timeSelectionError(rows[si],'end',nextEnd);
+    if(error){du.closest('.slot').querySelector('.time-error').textContent=error;return;}
+    rows[si].end=nextEnd;
+    renderSlots(); return;
+  }
+  var db=e.target.closest(".daypick button"); if(!db)return;
+  var i=+db.closest(".slot").dataset.i, d=+db.dataset.d, at=rows[i].days.indexOf(d);
+  if(at>-1) rows[i].days.splice(at,1); else rows[i].days.push(d);
+  db.setAttribute("aria-pressed",String(at===-1));
+});
+slotArea.addEventListener("change",function(e){
+  var inp=e.target.closest('[data-part]'); if(!inp)return;
+  var field=inp.closest('.timefield'),slot=inp.closest('.slot'),i=+slot.dataset.i,key=field.dataset.k;
+  var value=parseTimeParts(field.querySelector('[data-part="period"]').value,
+    field.querySelector('[data-part="hour"]').value.trim(),field.querySelector('[data-part="minute"]').value.trim());
+  var error=timeSelectionError(rows[i],key,value),errorEl=slot.querySelector('.time-error');
+  if(error){syncTimeFields(field,rows[i][key]);errorEl.textContent=error;return;}
+  rows[i][key]=value;
+  syncTimeFields(field,value);
+  errorEl.textContent='';
+  var len=rows[i].end-rows[i].start;
+  slot.querySelectorAll('[data-dur]').forEach(function(b){
+    b.setAttribute('aria-pressed',String(+b.dataset.dur===len));
+  });
+});
+btnAddSlot.addEventListener("click",function(){
+  if(rows.length>=MAXSLOTS)return;
+  var last=rows[rows.length-1];
+  rows.push({days:[],start:last.start,end:last.end});
+  renderSlots();
+});
+
+var colorPick=document.getElementById("colorPick");
+colorPick.innerHTML=[1,2,3,4,5,6,7,8].map(function(n){
+  return '<button type="button" data-c="'+n+'" aria-pressed="'+(n===1)+'" aria-label="색 '+n+
+         '" style="background:var(--c'+n+');color:var(--i'+n+')"></button>';}).join("");
+colorPick.addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(b) setColor(+b.dataset.c);});
+function setColor(n){
+  pickedColor=n;
+  colorPick.querySelectorAll("button").forEach(function(x){
+    x.setAttribute("aria-pressed",String(+x.dataset.c===n));});
+}
+
+var formMsg=document.getElementById("formMsg");
+function msg(t){formMsg.textContent=t;formMsg.className="formmsg show";}
+function clearMsg(){formMsg.className="formmsg";}
+
+var toastEl=document.getElementById("toast"),toastT;
+function toast(t){toastEl.textContent=t;toastEl.classList.add("show");
+  clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove("show");},2200);}
+
+function expand(){
+  var out=[];
+  rows.forEach(function(r){r.days.forEach(function(d){out.push({day:d,start:r.start,end:r.end});});});
+  return out.sort(function(a,b){return a.day-b.day||a.start-b.start;});
+}
+function overlap(a,b){return a.day===b.day&&a.start<b.end&&b.start<a.end;}
+function selfClash(slots){
+  for(var i=0;i<slots.length;i++)for(var j=i+1;j<slots.length;j++)
+    if(overlap(slots[i],slots[j])) return DAYS_KO[slots[i].day];
+  return null;
+}
+function findClash(slots,ignoreId){
+  for(var i=0;i<courses.length;i++){var c=courses[i]; if(c.id===ignoreId)continue;
+    for(var a=0;a<c.slots.length;a++)for(var b=0;b<slots.length;b++)
+      if(overlap(c.slots[a],slots[b])) return c.name;}
+  return null;
+}
+
+document.getElementById("btnSave").addEventListener("click",function(){
+  var name=document.getElementById("fName").value.trim();
+  var place=document.getElementById("fPlace").value.trim();
+  var credit=Math.max(0,Math.min(9,parseInt(document.getElementById("fCredit").value,10)||0));
+
+  if(!name){msg("강의명을 입력하세요.");document.getElementById("fName").focus();trackValidation("no_name");return;}
+  for(var i=0;i<rows.length;i++){
+    if(rows[i].start%5||rows[i].end%5){msg("시간 "+(i+1)+"을 5분 단위로 다시 선택해 주세요.");trackValidation("invalid_time");return;}
+    if(rows[i].end<=rows[i].start){msg("시간 "+(i+1)+"의 종료 시간이 시작보다 늦어야 합니다.");trackValidation("invalid_time");return;}
+  }
+  var slots=expand();
+  if(!slots.length){msg("요일을 하나 이상 고르세요.");trackValidation("no_day");return;}
+  var self=selfClash(slots);
+  if(self){msg(self+"요일 안에서 시간 블록끼리 겹칩니다.");trackValidation("self_clash");return;}
+  var clash=findClash(slots,editingId);
+  if(clash){msg("'"+clash+"'와 시간이 겹칩니다. 시간이나 요일을 바꿔 주세요.");trackValidation("course_clash");return;}
+
+  if(editingId){
+    var c=courses.find(function(x){return x.id===editingId;});
+    c.name=name;c.place=place;c.credit=credit;c.color=pickedColor;c.slots=slots;
+    toast("수정했습니다"); exitEdit();
+    window.__timoTrack("course_edit",{slot_count:slots.length,course_count:courses.length});
+  }else{
+    courses.push({id:"c"+(++uid),name:name,place:place,credit:credit,color:pickedColor,slots:slots});
+    toast(name+" 담았습니다"); resetForm();
+    window.__timoTrack("course_add",{course_index:courses.length,slot_count:slots.length,course_count:courses.length});
+    trackFirstCourse();
+  }
+  paint();
+});
+
+function resetForm(){
+  document.getElementById("fName").value="";
+  document.getElementById("fPlace").value="";
+  document.getElementById("fCredit").value="3";
+  rows=[{days:[],start:9*60,end:10*60+30}];
+  renderSlots();
+  setColor(pickedColor%8+1);
+  clearMsg();
+  document.getElementById("fName").focus();
+}
+
+var btnCancel=document.getElementById("btnCancel");
+function enterEdit(id){
+  var c=courses.find(function(x){return x.id===id;}); if(!c)return;
+  editingId=id;
+  document.getElementById("fName").value=c.name;
+  document.getElementById("fPlace").value=c.place;
+  document.getElementById("fCredit").value=c.credit;
+  var map={},order=[];
+  c.slots.forEach(function(s){var k=s.start+"-"+s.end;
+    if(!map[k]){map[k]={days:[],start:s.start,end:s.end};order.push(k);}
+    map[k].days.push(s.day);});
+  rows=order.map(function(k){return map[k];});
+  if(!rows.length) rows=[{days:[],start:9*60,end:10*60+30}];
+  renderSlots();
+  setColor(c.color);
+  document.getElementById("formTitle").textContent="강의 수정";
+  document.getElementById("btnSave").textContent="수정 저장";
+  btnCancel.classList.remove("hidden");
+  clearMsg();
+  document.getElementById("fName").focus();
+  document.querySelector(".app-body").scrollIntoView({block:"start",behavior:"smooth"});
+}
+function exitEdit(){
+  editingId=null;
+  document.getElementById("formTitle").textContent="강의 추가";
+  document.getElementById("btnSave").textContent="강의 담기";
+  btnCancel.classList.add("hidden");
+  resetForm();
+}
+btnCancel.addEventListener("click",exitEdit);
+
+function groupTimes(c){
+  var map={},order=[];
+  c.slots.forEach(function(s){var k=s.start+"-"+s.end;
+    if(!map[k]){map[k]=[];order.push(k);} map[k].push(DAYS_KO[s.day]);});
+  return order.map(function(k){var p=k.split("-");
+    return map[k].join("·")+" "+fmt(+p[0])+"–"+fmt(+p[1]);}).join(" / ");
+}
+
+function paint(){
+  var list=document.getElementById("courseList");
+  if(!courses.length){
+    list.innerHTML='<p class="empty">아직 담은 강의가 없습니다.<br>위에서 첫 강의를 추가해 보세요.</p>';
+  }else{
+    list.innerHTML=courses.map(function(c){
+      return '<div class="citem" data-id="'+c.id+'">'+
+        '<span class="dot" style="background:var(--c'+c.color+')"></span>'+
+        '<span class="meta"><span class="nm">'+esc(c.name)+'</span>'+
+        '<span class="tm">'+esc(groupTimes(c))+(c.credit?" · "+c.credit+"학점":"")+'</span></span>'+
+        '<button class="icobtn js-edit">수정</button>'+
+        '<button class="icobtn del js-del">삭제</button></div>';
+    }).join("");
+  }
+  document.getElementById("courseCount").textContent=courses.length+"개";
+
+  var credits=courses.reduce(function(a,c){return a+(c.credit||0);},0);
+  document.getElementById("stCredit").textContent=credits;
+  document.getElementById("stCourse").textContent=courses.length;
+
+  var used={};
+  courses.forEach(function(c){c.slots.forEach(function(s){used[s.day]=1;});});
+  var free=DAYS_KO.filter(function(d,i){return !used[i];});
+  document.getElementById("stFree").textContent=courses.length?(free.length?free.join("·"):"없음"):"—";
+
+  var firsts=[];
+  courses.forEach(function(c){c.slots.forEach(function(s){firsts.push(s.start);});});
+  document.getElementById("stFirst").textContent=firsts.length?fmt(Math.min.apply(null,firsts)):"—";
+
+  document.getElementById("ttHeadSub").textContent=credits+"학점 · "+courses.length+"과목";
+  renderGrid(appGrid,courses,{clickable:true,detail:true,pxmin:1.1,
+    emptyText:"강의를 담으면 여기에 나타납니다"});
+  queueDraft();
+}
+
+document.getElementById("courseList").addEventListener("click",function(e){
+  var item=e.target.closest(".citem"); if(!item)return;
+  var id=item.dataset.id;
+  if(e.target.classList.contains("js-del")){
+    var c=courses.find(function(x){return x.id===id;});
+    courses=courses.filter(function(x){return x.id!==id;});
+    if(editingId===id) exitEdit();
+    toast((c?c.name:"강의")+" 삭제"); paint();
+    window.__timoTrack("course_delete",{course_count:courses.length}); return;
+  }
+  enterEdit(id);
+});
+appGrid.addEventListener("click",function(e){
+  var b=e.target.closest(".block"); if(b&&b.dataset.id) enterEdit(b.dataset.id);});
+appGrid.addEventListener("keydown",function(e){
+  var b=e.target.closest(".block");
+  if(b&&b.dataset.id&&(e.key==="Enter"||e.key===" ")){e.preventDefault();enterEdit(b.dataset.id);}});
+
+var ttName=document.getElementById("ttName");
+ttName.addEventListener("input",function(){
+  document.getElementById("ttHeadName").textContent=ttName.value||"2026 - 2";});
+
+document.getElementById("btnClear").addEventListener("click",function(){
+  if(!courses.length){toast("담은 강의가 없습니다");return;}
+  if(!confirm("담은 강의를 모두 지울까요? 되돌릴 수 없습니다."))return;
+  courses=[];exitEdit();paint();toast("모두 지웠습니다");
+  window.__timoTrack("clear_all",{});});
+
+function cssVar(name){
+  return getComputedStyle(appTT).getPropertyValue(name).trim();
+}
+function roundRect(ctx,x,y,w,h,r){
+  r=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function clip(ctx,text,max){
+  if(ctx.measureText(text).width<=max) return text;
+  var t=text;
+  while(t.length>1&&ctx.measureText(t+"…").width>max) t=t.slice(0,-1);
+  return t+"…";
+}
+
+// Long course names used to be cut with an ellipsis. Wrap them instead,
+// breaking on spaces where possible and mid-word only when a single word
+// is itself too wide (which is the normal case for Korean).
+function wrapText(ctx,text,max,maxLines){
+  var chunks=[];
+  String(text).split(/\s+/).filter(Boolean).forEach(function(w){
+    if(ctx.measureText(w).width<=max){ chunks.push(w); return; }
+    var piece="";
+    for(var k=0;k<w.length;k++){
+      if(ctx.measureText(piece+w[k]).width<=max) piece+=w[k];
+      else { if(piece) chunks.push(piece); piece=w[k]; }
+    }
+    if(piece) chunks.push(piece);
+  });
+  var lines=[], cur="";
+  chunks.forEach(function(c){
+    var cand=cur?cur+" "+c:c;
+    if(!cur||ctx.measureText(cand).width<=max) cur=cand;
+    else { lines.push(cur); cur=c; }
+  });
+  if(cur) lines.push(cur);
+  if(!lines.length) return [""];
+  if(lines.length>maxLines){
+    lines=lines.slice(0,maxLines);
+    lines[maxLines-1]=clip(ctx,lines[maxLines-1]+"…",max);
+  }
+  return lines;
+}
+
+function timeRange(list){
+  var starts=[],ends=[];
+  (list||courses).forEach(function(c){c.slots.forEach(function(s){starts.push(s.start);ends.push(s.end);});});
+  // Fit the exact earliest start and latest end across all weekdays.
+  var top=starts.length ? Math.min.apply(null,starts) : 9*60;
+  var bottom=ends.length ? Math.max.apply(null,ends) : 18*60;
+  return {top:top,bottom:bottom,n:bottom-top};
+}
+function themeColors(){
+  var t={bg:cssVar("--g-bg")||"#fff",ink:cssVar("--g-ink")||"#2A1F26",
+         mut:cssVar("--g-mut")||"#888",line:cssVar("--g-line")||"rgba(0,0,0,.1)",
+         pal:[],pin:[]};
+  // export-only tone; themes that don't set it fall back to the grid colour
+  t.canvas=cssVar("--g-canvas")||t.bg;
+  t.accent=cssVar("--g-accent")||"";
+  for(var i=1;i<=8;i++){t.pal[i]=cssVar("--c"+i)||"#ddd";t.pin[i]=cssVar("--i"+i)||"#2A1F26";}
+  return t;
+}
+
+function rgbOf(col){
+  col=String(col||"").trim();
+  if(col.charAt(0)==="#"){
+    var h=col.slice(1);
+    if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var n=parseInt(h,16);
+    return [(n>>16)&255,(n>>8)&255,n&255];
+  }
+  var m=col.match(/rgba?\(([^)]+)\)/);
+  if(m){var q=m[1].split(",");return [parseInt(q[0],10)||0,parseInt(q[1],10)||0,parseInt(q[2],10)||0];}
+  return [0,0,0];
+}
+function tint(col,a){
+  var c=rgbOf(col);
+  return "rgba("+c[0]+","+c[1]+","+c[2]+","+a+")";
+}
+function shade(col,f,a){
+  var c=rgbOf(col);
+  return "rgba("+Math.round(c[0]*f)+","+Math.round(c[1]*f)+","+Math.round(c[2]*f)+","+a+")";
+}
+// the pattern has to read as part of the theme, so pull the most
+// characteristic light colour out of the palette instead of hard-coding pink
+function accentOf(T){
+  // a theme can name its pattern colour outright; the chroma guess below
+  // only runs when it doesn't, and it guesses badly for Opal, whose lilac
+  // sits behind a higher-chroma cream in the palette
+  if(T.accent) return T.accent;
+  var best=T.pal[1], bestChroma=-1;
+  for(var i=1;i<=8;i++){
+    var c=rgbOf(T.pal[i]), mx=Math.max(c[0],c[1],c[2]), mn=Math.min(c[0],c[1],c[2]);
+    var light=(mx+mn)/2/255;
+    // chroma, not HSL saturation — saturation rockets toward 1 for
+    // near-whites and would hand back a washed-out cream every time
+    var chroma=mx-mn;
+    if(light>=.55 && light<=.93 && chroma>bestChroma){ bestChroma=chroma; best=T.pal[i]; }
+  }
+  return best;
+}
+
+function paintBackground(ctx,T,W,H,focusY){
+  ctx.fillStyle=T.canvas||T.bg; ctx.fillRect(0,0,W,H);
+  if(exportBg==="plain") return;
+  var acc=accentOf(T), u=W/1290, g, x, y, row;
+  var fy=focusY||H*.5;
+
+  if(exportBg==="blush"){
+    // centred on the timetable, not the canvas, so the colour pools
+    // around the grid instead of draining to the bottom
+    g=ctx.createRadialGradient(W*.5,fy,0,W*.5,fy,Math.max(W*.98,H*.46));
+    g.addColorStop(0,tint(acc,1));
+    g.addColorStop(.42,tint(acc,.5));
+    g.addColorStop(1,tint(acc,0));
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  }else if(exportBg==="stripe"){
+    var sw=44*u;
+    ctx.fillStyle=tint(acc,.4);
+    for(x=0;x<W;x+=sw*2) ctx.fillRect(x,0,sw,H);
+
+  }else if(exportBg==="dots"){
+    var dX=104*u, dY=64*u, dR=Math.max(3,12*u);
+    ctx.fillStyle=tint(acc,.95);
+    row=0;
+    for(y=dY*.5;y<H+dY;y+=dY){
+      for(x=(row%2?dX*.5:0);x<W+dX;x+=dX){
+        ctx.beginPath(); ctx.arc(x,y,dR,0,Math.PI*2); ctx.fill();
+      }
+      row++;
+    }
+
+  }else if(exportBg==="hearts"){
+    var hX=124*u, hY=78*u, hS=Math.max(10,30*u);
+    ctx.fillStyle=tint(acc,.95);
+    row=0;
+    for(y=hY*.35;y<H+hY;y+=hY){
+      for(x=(row%2?hX*.5:0);x<W+hX;x+=hX){
+        ctx.beginPath();
+        ctx.moveTo(x,y+hS*.30);
+        ctx.bezierCurveTo(x,y,x-hS*.50,y,x-hS*.50,y+hS*.30);
+        ctx.bezierCurveTo(x-hS*.50,y+hS*.62,x-hS*.18,y+hS*.78,x,y+hS);
+        ctx.bezierCurveTo(x+hS*.18,y+hS*.78,x+hS*.50,y+hS*.62,x+hS*.50,y+hS*.30);
+        ctx.bezierCurveTo(x+hS*.50,y,x,y,x,y+hS*.30);
+        ctx.closePath(); ctx.fill();
+      }
+      row++;
+    }
+
+  }else if(exportBg==="gingham"){
+    var band=52*u;
+    ctx.fillStyle=tint(acc,.34);
+    for(x=0;x<W;x+=band*2) ctx.fillRect(x,0,band,H);
+    for(y=0;y<H;y+=band*2) ctx.fillRect(0,y,W,band);
+    ctx.fillStyle=tint(acc,.16);
+    for(x=band*.34;x<W;x+=band*2) ctx.fillRect(x,0,Math.max(1,2*u),H);
+    for(y=band*.34;y<H;y+=band*2) ctx.fillRect(0,y,W,Math.max(1,2*u));
+
+  }else if(exportBg==="floral"){
+    // dense ditsy rose print: layered blooms, sage sprigs, ochre buds.
+    // Fixed seed so a given export always looks the same.
+    var seed=20260810;
+    var rnd=function(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; };
+    var cell=46*u, k, a, cx, cy, r;
+    var petal=tint(acc,.78), petal2=shade(acc,.95,.72),
+        core=shade(acc,.92,.8), swirl=shade(acc,.82,.4);
+    var leaf="rgba(148,156,116,.4)", stem="rgba(150,158,124,.45)", bud="rgba(212,178,116,.45)";
+
+    for(y=-cell;y<H+cell;y+=cell){
+      for(x=-cell;x<W+cell;x+=cell){
+        cx=x+rnd()*cell*1.05; cy=y+rnd()*cell*1.05;
+
+        // a sprig of leaves, offset from the bloom
+        ctx.fillStyle=leaf;
+        for(k=0;k<3;k++){
+          a=rnd()*Math.PI*2;
+          var lr=(5+rnd()*4)*u;
+          ctx.save();
+          ctx.translate(cx+Math.cos(a)*cell*.34,cy+Math.sin(a)*cell*.34);
+          ctx.rotate(a);
+          ctx.beginPath(); ctx.ellipse(0,0,lr*1.5,lr*.62,0,0,Math.PI*2); ctx.fill();
+          ctx.restore();
+        }
+        // thin trailing vine
+        ctx.strokeStyle=stem; ctx.lineWidth=Math.max(.8,1.6*u);
+        ctx.beginPath();
+        a=rnd()*Math.PI*2;
+        ctx.moveTo(cx,cy);
+        ctx.quadraticCurveTo(cx+Math.cos(a)*cell*.3,cy+Math.sin(a)*cell*.5,
+                             cx+Math.cos(a)*cell*.62,cy+Math.sin(a)*cell*.44);
+        ctx.stroke();
+
+        if(rnd()<.24){
+          // small ochre bud instead of a rose
+          ctx.fillStyle=bud;
+          ctx.beginPath(); ctx.arc(cx,cy,(3.5+rnd()*2)*u,0,Math.PI*2); ctx.fill();
+          continue;
+        }
+
+        r=(.7+rnd()*.4)*15*u;
+        ctx.fillStyle=rnd()<.4?petal2:petal;
+        for(k=0;k<5;k++){
+          a=k/5*Math.PI*2+rnd()*.4;
+          ctx.beginPath();
+          ctx.arc(cx+Math.cos(a)*r*.48,cy+Math.sin(a)*r*.48,r*.52,0,Math.PI*2);
+          ctx.fill();
+        }
+        ctx.fillStyle=core;
+        ctx.beginPath(); ctx.arc(cx,cy,r*.46,0,Math.PI*2); ctx.fill();
+        // the coiled centre that makes it read as a rose, not a daisy
+        ctx.strokeStyle=swirl; ctx.lineWidth=Math.max(.8,r*.1);
+        ctx.beginPath(); ctx.arc(cx,cy,r*.24,.5,4.1); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx-r*.04,cy+r*.04,r*.1,2.1,5.5); ctx.stroke();
+      }
+    }
+
+  }
+}
+
+// any pattern competes with the grid, so the timetable gets an opaque plate
+function drawPlate(ctx,T,x,y,w,h,r){
+  if(exportBg==="plain") return;
+  ctx.save();
+  ctx.shadowColor="rgba(0,0,0,.14)"; ctx.shadowBlur=r*1.4; ctx.shadowOffsetY=r*.35;
+  ctx.fillStyle=T.bg;
+  roundRect(ctx,x,y,w,h,r); ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle=tint(T.ink,.09); ctx.lineWidth=1;
+  roundRect(ctx,x+.5,y+.5,w-1,h-1,r); ctx.stroke();
+}
+
+function drawCard(){
+  // the card is a flat printable, never patterned — force plain for the
+  // whole draw so paintBackground and drawPlate both stand down
+  var prevBg=exportBg; exportBg="plain";
+  try{
+  var S=2, PAD=26, HEAD=62, TIMEW=60, DAYH=34, ROWH=40/30, COLW=132, GAP=3;
+  var R=timeRange(), n=R.n, top=R.top;
+  var W=PAD*2+TIMEW+COLW*5, H=PAD*2+HEAD+DAYH+ROWH*n;
+
+  var cv=document.createElement("canvas");
+  cv.width=W*S; cv.height=H*S;
+  var ctx=cv.getContext("2d"); ctx.scale(S,S); ctx.textBaseline="middle";
+  var T=themeColors();
+
+  ctx.fillStyle=T.bg; ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle=T.ink;
+  ctx.font='500 21px "Playfair Display",Georgia,serif';
+  ctx.textAlign="left";
+  ctx.fillText(ttName.value||"2026 - 2",PAD,PAD+26);
+
+  var gx=PAD, gy=PAD+HEAD;
+  paintGrid(ctx,T,{x:gx,y:gy,timeW:TIMEW,colW:COLW,dayH:DAYH,rowH:ROWH,gap:GAP,
+    top:top,n:n,dayFont:'500 16px "Pretendard Variable",Pretendard,sans-serif',
+    hourFont:'400 15px "Pretendard Variable",Pretendard,sans-serif',
+    nameFont:'600 18px "Pretendard Variable",Pretendard,sans-serif',
+    subFont:'400 15px "Pretendard Variable",Pretendard,sans-serif',
+    timeFont:'400 14px "Pretendard Variable",Pretendard,sans-serif',
+    radius:8,pad:9,line2:17,subAt:40,subGap:20});
+
+  ctx.fillStyle=T.mut; ctx.globalAlpha=.75;
+  ctx.font='italic 11px Georgia,serif'; ctx.textAlign="right";
+  ctx.fillText("made with @Timo",W-PAD,H-PAD/2);
+  ctx.globalAlpha=1;
+  return cv;
+  } finally { exportBg=prevBg; }
+}
+
+function drawWallpaper(ipad,landscape){
+  var W = ipad ? (landscape?2732:2048) : 1290, H = ipad ? (landscape?2048:2732) : 2796;
+  var BASEW = ipad ? 2048 : 1290;
+  var PAD=155, TIMEW=96, DAYH=54, GAP=5;
+  var COLW=(BASEW-PAD*2-TIMEW)/5;
+  var gx=PAD+(W-BASEW)/2;
+  var CLOCK=830+Math.round(H*0.03); // Lower the wallpaper timetable by 3% of image height.
+  var FOOT=250;
+  var R=timeRange(), n=R.n, top=R.top;
+
+  var cv=document.createElement("canvas");
+  cv.width=W; cv.height=H;
+  var ctx=cv.getContext("2d"); ctx.textBaseline="middle";
+  var T=themeColors();
+
+  var titleY=CLOCK+78;
+  var availTop=titleY+84, availBottom=H-FOOT;
+  var rowH=Math.min(76/30,(availBottom-availTop-DAYH)/n);
+  var gridH=DAYH+rowH*n;
+  var gy=availTop;
+
+  var plx=gx-46, plw=TIMEW+COLW*5+92;
+  var ply=titleY-104, plh=(gy+gridH+56)-ply;
+
+  paintBackground(ctx,T,W,H,ply+plh/2);
+  drawPlate(ctx,T,plx,ply,plw,plh,34);
+
+  ctx.fillStyle=T.ink;
+  ctx.font='500 52px "Playfair Display",Georgia,serif';
+  ctx.textAlign="center";
+  ctx.fillText(ttName.value||"2026 - 2",W/2,titleY);
+
+  paintGrid(ctx,T,{x:gx,y:gy,timeW:TIMEW,colW:COLW,dayH:DAYH,rowH:rowH,gap:GAP,
+    top:top,n:n,dayFont:'500 30px "Pretendard Variable",Pretendard,sans-serif',
+    hourFont:'400 27px "Pretendard Variable",Pretendard,sans-serif',
+    nameFont:'600 32px "Pretendard Variable",Pretendard,sans-serif',
+    subFont:'400 24px "Pretendard Variable",Pretendard,sans-serif',
+    timeFont:'400 22px "Pretendard Variable",Pretendard,sans-serif',
+    radius:13,pad:14,line2:28,subAt:68,subGap:31});
+
+  ctx.fillStyle=T.mut; ctx.globalAlpha=.6;
+  ctx.font='italic 23px Georgia,serif'; ctx.textAlign="center";
+  ctx.fillText("made with @Timo",W/2,H-160);
+  ctx.globalAlpha=1;
+  return cv;
+}
+
+function paintGrid(ctx,T,g){
+  ctx.textAlign="center"; ctx.font=g.dayFont; ctx.fillStyle=T.mut;
+  DAYS.forEach(function(d,i){
+    ctx.fillText(d,g.x+g.timeW+g.colW*i+g.colW/2,g.y+g.dayH/2);
+  });
+
+  ctx.textAlign="right"; ctx.font=g.hourFont; ctx.fillStyle=T.mut;
+  // Anchor hour labels to the start of each hour, as in the on-screen grid.
+  ctx.save();
+  ctx.textBaseline="top";
+  for(var m=g.top;m<g.top+g.n;m+=60){
+    ctx.fillText(m%60 ? fmt(m) : String(hour12(m)),g.x+g.timeW-14,g.y+g.dayH+g.rowH*(m-g.top)+g.gap/2);
+  }
+  ctx.restore();
+
+  ctx.strokeStyle=T.line; ctx.lineWidth=1;
+  for(var c=0;c<5;c++){
+    var x=g.x+g.timeW+g.colW*c+0.5;
+    ctx.beginPath(); ctx.moveTo(x,g.y+g.dayH); ctx.lineTo(x,g.y+g.dayH+g.rowH*g.n); ctx.stroke();
+  }
+
+  ctx.textAlign="left";
+  courses.forEach(function(co){
+    co.slots.forEach(function(s){
+      var x=g.x+g.timeW+g.colW*s.day+g.gap,
+          y=g.y+g.dayH+(s.start-g.top)*g.rowH+g.gap/2,
+          w=g.colW-g.gap*2,
+          h=Math.max(0,(s.end-s.start)*g.rowH-g.gap);
+      ctx.fillStyle=T.pal[co.color]||"#ddd";
+      roundRect(ctx,x,y,w,h,g.radius); ctx.fill();
+      ctx.strokeStyle="rgba(0,0,0,.06)"; ctx.lineWidth=1; ctx.stroke();
+
+      ctx.fillStyle=T.pin[co.color]||"#2A1F26";
+      ctx.font=g.nameFont;
+      var namePx=parseFloat((/([\d.]+)px/.exec(g.nameFont)||[0,14])[1]);
+      var nameLH=namePx*1.32;
+      // a second line is only worth taking if the block still has room
+      // underneath it for the room and time lines
+      var maxLines=(h>=g.subAt+nameLH+6)?2:1;
+      var nameLines=wrapText(ctx,co.name,w-g.pad*2,maxLines);
+      for(var nl=0;nl<nameLines.length;nl++)
+        ctx.fillText(nameLines[nl],x+g.pad,y+g.line2+nl*nameLH);
+
+      var maxW=w-g.pad*2, line=g.subAt+(nameLines.length-1)*nameLH;
+      if(co.place && h>line+6){
+        ctx.globalAlpha=.85; ctx.font=g.subFont;
+        ctx.fillText(clip(ctx,co.place,maxW),x+g.pad,y+line);
+        ctx.globalAlpha=1;
+        line+=g.subGap;
+      }
+      if(h>line+6){
+        ctx.globalAlpha=.62; ctx.font=g.timeFont;
+        ctx.fillText(clip(ctx,fmt(s.start)+"–"+fmt(s.end),maxW),x+g.pad,y+line);
+        ctx.globalAlpha=1;
+      }
+    });
+  });
+}
+
+var modal=document.getElementById("modal"),
+    mImg=document.getElementById("mImg"),
+    mDl=document.getElementById("mDl"), lastBlob=null,
+    ipadOrient=document.getElementById("ipadOrient"),
+    bgRow=document.getElementById("bgRow"),
+    exportMode="wall", ipadLandscape=false, exportBg="plain";
+
+function releaseUrl(){
+  lastBlob=null;
+  if(mDl.dataset.url){URL.revokeObjectURL(mDl.dataset.url);delete mDl.dataset.url;}
+}
+function closeModal(){modal.classList.add("hidden");releaseUrl();}
+document.getElementById("mClose").addEventListener("click",closeModal);
+modal.addEventListener("click",function(e){if(e.target===modal) closeModal();});
+document.addEventListener("keydown",function(e){
+  if(e.key!=="Escape") return;
+  if(fbModal&&!fbModal.classList.contains("hidden")){ closeFeedback("dismiss"); return; }
+  if(!modal.classList.contains("hidden")) closeModal();});
+
+function buildImage(autoSave){
+  releaseUrl();
+  var cv = exportMode==="card" ? drawCard() : drawWallpaper(exportMode==="ipad",exportMode==="ipad"&&ipadLandscape);
+  var base=(ttName.value||"timo").replace(/[\\/:*?"<>|]/g,"").trim()||"timo";
+  var suffix = exportMode==="wall" ? "-wallpaper" : exportMode==="ipad" ? "-ipad" : "";
+  var name=base+suffix+".png";
+
+  mImg.src=cv.toDataURL("image/png");
+  mDl.download=name;
+  mDl.href=mImg.src;
+
+  cv.toBlob(function(blob){
+    if(!blob) return;
+    lastBlob=blob;
+    var url=URL.createObjectURL(blob);
+    mDl.href=url; mDl.dataset.url=url;
+    if(autoSave){
+      var a=document.createElement("a");
+      a.href=url; a.download=name;
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+  },"image/png");
+}
+
+document.querySelectorAll(".js-mode").forEach(function(b){
+  b.addEventListener("click",function(){
+    var prevMode=exportMode;
+    exportMode=b.dataset.mode;
+    document.querySelectorAll(".js-mode").forEach(function(x){
+      x.setAttribute("aria-pressed",String(x===b));});
+    ipadOrient.classList.toggle("hidden",exportMode!=="ipad");
+    bgRow.classList.toggle("hidden",exportMode==="card");
+    if(prevMode!==exportMode){
+      window.__timoTrack("export_mode_change",{
+        mode:exportMode,previous_mode:prevMode,
+        theme:currentTheme(),bg:effectiveBg()
+      });
+    }
+    buildImage(false);
+  });
+});
+function saveHint(){
+  toast("위 이미지를 길게 눌러 사진에 저장하세요");
+  try{mImg.scrollIntoView({block:"center",behavior:"smooth"});}catch(err){}
+}
+mDl.addEventListener("click",function(e){
+  if(!lastBlob){e.preventDefault();toast("이미지를 준비하는 중입니다");return;}
+  var canDownload="download" in document.createElement("a");
+  var ctx=getAnalyticsContext();
+  window.__timoTrack("image_save_click",withUTM(merge(ctx,{
+    method:canDownload?"direct_download":"long_press",time_to_export:timeToExport()
+  })));
+  if(!canDownload){e.preventDefault();saveHint();return;}
+  // Follow the PNG download link directly; never invoke the share sheet.
+  maybeFeedback(ctx);
+});
+
+/* ---------------- 만족도 조사 (저장 클릭 후 일정 확률, 세션 1회) ---------------- */
+var FB_PROBABILITY=0.3;
+var fbModal=document.getElementById("fbModal"),
+    fbRating=0, fbFeature="", fbCtx=null, fbDone=false;
+
+function maybeFeedback(ctx){
+  if(!fbModal) return;
+  if(SS.get("timo:feedback_shown")) return;
+  if(Math.random()>=FB_PROBABILITY) return;
+  SS.set("timo:feedback_shown","1");
+  fbCtx={theme:ctx.theme,bg:ctx.bg,mode:ctx.mode};
+  fbRating=0; fbFeature=""; fbDone=false;
+  fbModal.querySelectorAll("#fbRate button,#fbOpts button").forEach(function(x){
+    x.setAttribute("aria-pressed","false");});
+  /* 다운로드 클릭 직후에는 안내와 겹치지 않도록 잠깐 뒤에 띄운다 */
+  setTimeout(function(){ fbModal.classList.remove("hidden"); },1400);
+}
+function closeFeedback(reason){
+  if(!fbModal||fbModal.classList.contains("hidden")) return;
+  fbModal.classList.add("hidden");
+  if(reason==="dismiss"&&!fbDone){
+    fbDone=true;
+    window.__timoTrack("feedback_dismiss",merge(fbCtx||{},{rating:fbRating||0}));
+  }
+}
+if(fbModal){
+  document.getElementById("fbClose").addEventListener("click",function(){closeFeedback("dismiss");});
+  fbModal.addEventListener("click",function(e){ if(e.target===fbModal) closeFeedback("dismiss"); });
+  document.getElementById("fbRate").addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    fbRating=+b.dataset.r;
+    this.querySelectorAll("button").forEach(function(x){
+      x.setAttribute("aria-pressed",String(x===b));});
+  });
+  document.getElementById("fbOpts").addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    fbFeature=b.dataset.f;
+    this.querySelectorAll("button").forEach(function(x){
+      x.setAttribute("aria-pressed",String(x===b));});
+  });
+  document.getElementById("fbSubmit").addEventListener("click",function(){
+    if(!fbRating){ toast("점수를 선택해 주세요"); return; }
+    if(fbDone){ fbModal.classList.add("hidden"); return; }
+    fbDone=true;
+    window.__timoTrack("feedback_submit",merge(fbCtx||{},{
+      rating:fbRating, feature_request:fbFeature||"none"
+    }));
+    fbModal.classList.add("hidden");
+    toast("의견 고맙습니다");
+  });
+}
+
+document.querySelectorAll(".js-bg").forEach(function(b){
+  b.addEventListener("click",function(){
+    var prevBgSel=exportBg;
+    exportBg=b.dataset.bg;
+    document.querySelectorAll(".js-bg").forEach(function(x){
+      x.setAttribute("aria-pressed",String(x===b));});
+    if(prevBgSel!==exportBg){
+      window.__timoTrack("export_bg_change",{
+        bg:exportBg,previous_bg:prevBgSel,
+        theme:currentTheme(),mode:exportMode
+      });
+    }
+    buildImage(false);
+  });
+});
+document.querySelectorAll(".js-ipad-o").forEach(function(b){
+  b.addEventListener("click",function(){
+    var prevO = ipadLandscape?"landscape":"portrait";
+    ipadLandscape = b.dataset.o==="landscape";
+    document.querySelectorAll(".js-ipad-o").forEach(function(x){
+      x.setAttribute("aria-pressed",String(x===b));});
+    var nextO = ipadLandscape?"landscape":"portrait";
+    if(prevO!==nextO) window.__timoTrack("ipad_orientation_change",{orientation:nextO});
+    buildImage(false);
+  });
+});
+
+document.getElementById("btnExport").addEventListener("click",function(){
+  if(!courses.length){toast("강의를 먼저 담아 주세요");return;}
+  if(exportBusy) return;  /* 연타해도 export_image가 두 번 찍히지 않게 */
+  exportBusy=true;
+  var btn=this,label=btn.textContent;
+  btn.textContent="만드는 중…";
+  var go=function(){
+    try{
+      buildImage(false);
+      modal.classList.remove("hidden");
+      toast("이미지를 만들었습니다");
+      var ctx=merge(getAnalyticsContext(),{time_to_export:timeToExport()});
+      window.__timoTrack("export_image",withUTM(merge(ctx,{})));
+      if(!LS.get("timo:first_complete")){
+        LS.set("timo:first_complete","1");
+        window.__timoTrack("first_timetable_complete",merge(ctx,{}));
+      }
+    }catch(err){ toast("이미지를 만들지 못했습니다"); }
+    btn.textContent=label;
+    exportBusy=false;
+  };
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(go).catch(go);
+  else go();
+});
+
+function applyAppTheme(t){
+  appTT.dataset.theme=t; app.dataset.theme=t;
+  document.querySelectorAll(".js-app-theme").forEach(function(x){
+    x.setAttribute("aria-pressed",String(x.dataset.theme===t));});
+}
+document.querySelectorAll(".js-app-theme").forEach(function(b){
+  b.addEventListener("click",function(){
+    var prevTheme=appTT.dataset.theme, nextTheme=b.dataset.theme;
+    applyAppTheme(nextTheme);queueDraft();
+    if(prevTheme===nextTheme) return;  /* 이미 선택된 테마 재클릭은 세지 않는다 */
+    window.__timoTrack("theme_change",{
+      theme:nextTheme,previous_theme:prevTheme,course_count:courses.length
+    });
+  });});
+
+var folder=document.getElementById("folder"),
+    pageHome=document.getElementById("pageHome");
+
+var currentPage="home";
+function showPage(name,source){
+  var build = name==="build";
+  var entering = build && currentPage!=="build";
+  pageHome.classList.toggle("hidden",build);
+  app.classList.toggle("hidden",!build);
+  folder.classList.toggle("wide",build);
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.setAttribute("aria-selected",String(t.dataset.page===name));});
+  window.scrollTo(0,0);
+  currentPage=name;
+  window.__timoTrack("page_view",{
+    page_title: build ? "시간표 만들기" : "홈",
+    page_location: location.href.split("#")[0] + (build ? "#build" : "#home")
+  });
+  if(entering){
+    markBuilderStart();
+    window.__timoTrack("builder_enter",withUTM({entry_source:source||"tab"}));
+  }
+}
+document.querySelectorAll(".tab").forEach(function(t){
+  t.addEventListener("click",function(){showPage(t.dataset.page,"tab");});});
+document.querySelectorAll(".js-open").forEach(function(b){
+  b.addEventListener("click",function(){
+    var loc=b.dataset.location||"unknown";
+    var p={location:loc};
+    if(loc==="hero"){ p.experiment_name=CTA_EXPERIMENT; p.variant=ctaVariant; }
+    window.__timoTrack("cta_click",p);
+    showPage("build",loc);
+  });});
+
+document.querySelectorAll(".js-scroll").forEach(function(b){
+  b.addEventListener("click",function(){
+    var t=document.getElementById(b.dataset.to); if(!t)return;
+    var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    t.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  });
+});
+
+var Store=(function(){
+  var mem={};
+  var hasW = typeof window!=="undefined" && window.storage && typeof window.storage.get==="function";
+  var hasL = (function(){
+    try{ localStorage.setItem("__timo__","1"); localStorage.removeItem("__timo__"); return true; }
+    catch(e){ return false; }
+  })();
+  return {
+    ok: hasW||hasL,
+    get:function(k){
+      if(hasW) return window.storage.get(k)
+        .then(function(r){ return r&&r.value ? JSON.parse(r.value) : null; })
+        .catch(function(){ return null; });
+      if(hasL) return Promise.resolve((function(){
+        try{ var v=localStorage.getItem(k); return v?JSON.parse(v):null; }catch(e){ return null; }
+      })());
+      return Promise.resolve(mem[k]||null);
+    },
+    set:function(k,v){
+      var str=JSON.stringify(v);
+      if(hasW) return window.storage.set(k,str).catch(function(){});
+      if(hasL){ try{ localStorage.setItem(k,str); }catch(e){} return Promise.resolve(); }
+      mem[k]=v; return Promise.resolve();
+    }
+  };
+})();
+
+var DRAFT="timo:draft", LIB="timo:library", saved=[];
+
+function snapshot(){
+  return {name:ttName.value,theme:appTT.dataset.theme,courses:courses,uid:uid};
+}
+function restore(d){
+  if(!d) return;
+  courses = Array.isArray(d.courses) ? d.courses : [];
+  uid = d.uid || courses.length;
+  ttName.value = d.name || "2026 - 2";
+  document.getElementById("ttHeadName").textContent = ttName.value;
+  if(d.theme) applyAppTheme(d.theme);
+  exitEdit();
+  paint();
+}
+
+var autosaveEl=document.getElementById("autosave"), saveT, flashT, ready=false;
+function queueDraft(){
+  if(!Store.ok||!ready) return;
+  clearTimeout(saveT);
+  saveT=setTimeout(function(){
+    Store.set(DRAFT,snapshot());
+    autosaveEl.textContent="자동 저장됨";
+    autosaveEl.style.opacity="1";
+    clearTimeout(flashT);
+    flashT=setTimeout(function(){autosaveEl.style.opacity="0";},1800);
+  },400);
+}
+
+function fmtDate(ts){
+  var d=new Date(ts);
+  return (d.getMonth()+1)+"월 "+d.getDate()+"일 "+
+         String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+function paintLibrary(){
+  var el=document.getElementById("savedList");
+  document.getElementById("saveCount").textContent=saved.length+"개";
+  if(!saved.length){
+    el.innerHTML='<p class="empty">저장된 시간표가 없습니다.</p>';
+  }else{
+    el.innerHTML=saved.map(function(it){
+      return '<div class="citem" data-sid="'+it.id+'">'+
+        '<span class="dot" style="background:var(--c'+((it.courses[0]&&it.courses[0].color)||1)+')"></span>'+
+        '<span class="meta"><span class="nm">'+esc(it.name)+'</span>'+
+        '<span class="when">'+fmtDate(it.savedAt)+' · '+it.courses.length+'과목</span></span>'+
+        '<button class="icobtn js-load">불러오기</button>'+
+        '<button class="icobtn del js-drop">삭제</button></div>';
+    }).join("");
+  }
+  var note=document.getElementById("saveNote");
+  note.textContent = Store.ok
+    ? "작업 중인 시간표는 자동으로 저장되어 다시 방문해도 남아 있습니다."
+    : "이 브라우저에서는 저장을 쓸 수 없어 새로고침하면 사라집니다.";
+}
+document.getElementById("btnSaveTT").addEventListener("click",function(){
+  if(!courses.length){toast("강의를 먼저 담아 주세요");return;}
+  var snap=snapshot();
+  saved.unshift({id:"s"+Date.now(),name:snap.name||"2026 - 2",theme:snap.theme,
+                 courses:JSON.parse(JSON.stringify(snap.courses)),savedAt:Date.now()});
+  saved=saved.slice(0,12);
+  Store.set(LIB,saved);
+  paintLibrary();
+  toast("보관함에 저장했습니다");
+  window.__timoTrack("timetable_save",{
+    theme:currentTheme(),course_count:courses.length,credit_total:creditTotal()
+  });
+});
+document.getElementById("savedList").addEventListener("click",function(e){
+  var item=e.target.closest("[data-sid]"); if(!item)return;
+  var id=item.dataset.sid, it=saved.find(function(x){return x.id===id;});
+  if(e.target.classList.contains("js-drop")){
+    var droppedCount = (it&&it.courses)?it.courses.length:0;
+    saved=saved.filter(function(x){return x.id!==id;});
+    Store.set(LIB,saved); paintLibrary(); toast("삭제했습니다");
+    window.__timoTrack("timetable_delete",{course_count:droppedCount});
+    return;
+  }
+  if(!it) return;
+  if(courses.length && !confirm("지금 작업 중인 시간표를 덮어씁니다. 계속할까요?")) return;
+  restore({name:it.name,theme:it.theme,courses:JSON.parse(JSON.stringify(it.courses)),
+           uid:it.courses.length});
+  toast(it.name+" 불러왔습니다");
+  window.__timoTrack("timetable_load",{
+    theme:it.theme||currentTheme(),course_count:it.courses.length
+  });
+});
+
+ttName.addEventListener("input",queueDraft);
+
+renderSlots();
+paint();
+paintLibrary();
+
+if(Store.ok){
+  Promise.all([Store.get(LIB),Store.get(DRAFT)]).then(function(r){
+    if(Array.isArray(r[0])){ saved=r[0]; paintLibrary(); }
+    ready=true;
+    var draft = (r[1]&&r[1].courses&&r[1].courses.length) ? r[1] : null;
+    if(draft) restore(draft);
+    trackVisit(!!draft, Array.isArray(r[0])?r[0].length:0);
+  }).catch(function(){ ready=true; trackVisit(false,0); });
+}else{
+  trackVisit(false,0);
+}
+})();
+</script>
+</body>
+</html>
